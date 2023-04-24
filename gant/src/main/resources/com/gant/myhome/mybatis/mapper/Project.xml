@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- SQL맵퍼파일은 xml이기 때문에 제일먼저 xml선언이 옵니다. -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gant.myhome.mybatis.mapper.ProjectMapper">
+	
+	<insert id="create">
+		<selectKey resultType="int" order="BEFORE" keyProperty="p_no">
+			select nvl(max(p_no),0)+1 from project 
+		</selectKey>
+		insert into project 
+			(p_no, p_hostid, p_name, p_sdate, p_edate, p_mids, p_mnames, p_content, p_situation, p_percent) 
+			values (#{p_no}, #{p_hostid}, #{p_name}, #{p_sdate}, #{p_edate}, #{p_mids}, #{p_mnames}, #{p_content}, #{p_situation}, #{p_percent})
+	</insert>
+	
+	<select id="getProjectList" resultType="Project">
+		select * 
+		from project 
+		<if test="admin == null and position == null">
+			where p_mids like '%' || #{id} || '%'
+			<if test='p_name != null'>
+				and p_name like '%' || #{p_name} || '%'
+			</if>
+		</if>
+		<if test="admin!=null or position!=null">
+			<if test='p_name != null'>
+			where p_name like '%' || #{p_name} || '%'
+			</if>
+		</if>
+		order by p_edate asc
+
+	</select>
+	
+	<select id="getProjectOne" resultType="project">
+		select * 
+		from project 
+		where p_no = #{p_no}
+	</select>
+	
+	<update id="update">
+		update project 
+		set p_name = #{p_name}, p_sdate=#{p_sdate}, p_edate=#{p_edate}, p_mids=#{p_mids}, p_mnames=#{p_mnames}, p_content=#{p_content},
+					 p_situation=#{p_situation}, p_percent=#{p_percent}
+		where p_no = #{p_no}
+	</update>
+	
+	<delete id="delete">
+		delete from project 
+		where p_no = #{p_no}
+	</delete>
+</mapper>

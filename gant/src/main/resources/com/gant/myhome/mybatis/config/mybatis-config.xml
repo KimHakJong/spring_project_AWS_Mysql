@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!--board.xml에서  #{BOARD_FILE , jdbcType=VARCHAR} 처럼 null이 올경우 처리를 안해줘도 된다. -->  
+ <configuration>
+    <settings>
+      <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>  
+ </configuration> 

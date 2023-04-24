@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- SQL맵퍼파일은 xml이기 때문에 제일먼저 xml선언이 옵니다. -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--  Mapper 인터페이스의 패키지 명과 이름을 namespace로 설정합니다. -->
+<mapper namespace="com.gant.myhome.mybatis.mapper.BoardLikeMapper">
+        
+      <select id="selectLike" resultType="String">
+	      select id
+	      from boardLike
+	      where id = #{id} and board_num = #{board_num}
+      </select>
+      
+   
+      <insert id="insertLike">
+      INSERT INTO boardLike
+      (id,board_num,like_check)
+	  VALUES
+	  (#{id},#{board_num},'false')
+      </insert>
+      
+      
+      <select id="selectLikeCheck" resultType="String">
+        select like_check
+        from boardLike
+        where id = #{id} and board_num = #{board_num}
+      </select>
+      
+      <update id="updateLike">
+      update boardLike
+      set  like_check = #{like_check}
+      where id = #{id} and board_num = #{board_num}
+      </update>
+      
+      
+</mapper>

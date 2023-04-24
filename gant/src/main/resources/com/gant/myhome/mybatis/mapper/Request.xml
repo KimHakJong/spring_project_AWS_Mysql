@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- SQL맵퍼파일은 xml이기 때문에 제일먼저 xml선언이 옵니다. -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--  Mapper 인터페이스의 패키지 명과 이름을 namespace로 설정합니다. -->
+<mapper namespace="com.gant.myhome.mybatis.mapper.RequestMapper">
+     
+     <!-- 
+		1. 태크에 id 속성은 Mapper 인터페이스에 추가한 메서드명과 동일하게 작성됩니다.
+		2. resultType속성은 연동시킬 메서드에 명시된 반환 타입을 작성해 줍니다.
+		-->
+		
+    <select id="getMembersCount" resultType="int">
+	select count(*)
+	from members
+	where id != #{id}
+	</select>
+    
+ 
+	<select id="getMembersList" resultType="members">
+	select name,id,department,position
+	from members
+	where id != #{id}
+	</select>
+		
+	
+	<select id="MemberSearchList" resultType="members">
+	select *
+	from members
+	WHERE name like '%'||#{search_name}||'%'
+	</select>
+	
+	<insert id="insertOvertime">
+	 insert into overtime
+     (id, paper_num, over_time, overtime_content, overtime_reason,
+      overtime_date,reference_person,condition) 
+     values
+	 (#{id},paper_seq.NEXTVAL,#{over_time},#{overtime_content},#{overtime_reason},
+	  #{overtime_date},#{reference_person},'대기')  
+	</insert>
+	
+	<select id="OvertimePaperNum" resultType="int">
+	 select max(paper_num)
+	 from overtime
+	</select>
+	
+	<insert id="OvertimeConditionreInsert">
+	 insert into overtime_condition
+     (paper_num,reference_person,condition) 
+     values
+	 (#{select_paper_num},#{reference_person},'대기')  
+	</insert>
+	
+	<insert id="insertVacation">
+	 insert into vacation
+     (id, paper_num, start_date, end_date, vacation_date, division, emergency,
+      details, reference_person, condition) 
+     values
+	 (#{id},paper_seq.NEXTVAL,#{start_date},#{end_date},#{vacation_date},#{division},#{emergency},
+	 #{details},#{reference_person},'대기')  
+	</insert>
+	
+	<select id="VacationPaperNum" resultType="int">
+	 select max(paper_num)
+	 from vacation
+	</select>
+	
+	
+	<insert id="VacationConditionreInsert">
+	 insert into vacation_condition
+     (paper_num,reference_person,condition) 
+     values
+	 (#{select_paper_num},#{reference_person},'대기')  
+	</insert>
+	
+	<select id="getPaperNum" resultType="int">
+		select paper_num
+		from vacation_condition
+		where reference_person = #{id}
+		union
+		select paper_num
+		from overtime_condition
+		where reference_person = #{id}
+	</select>
+	
+    <select id="getPaperList" resultType="map">  
+		select * 
+	    from (select rownum rnum, f.*
+			  from (select s.*, m.name
+				    from   (select paper_num, condition, write_date, classification, id
+				            from vacation
+				            union
+				            select paper_num, condition, write_date, classification, id
+				            from overtime) s
+				    inner join members m 
+				    on s.id = m.id
+				    <if test="!papernum_list.isEmpty()">
+				    where  s.paper_num in
+				           <foreach item="paper_num" index="index" collection="papernum_list" open="(" separator="," close=")">
+				              #{paper_num}
+				           </foreach>
+				    </if> 
+				    <if test="papernum_list.isEmpty()">
+				     where s.paper_num = null
+				    </if>       
+				    order by paper_num desc) f
+			  where rownum &lt;= #{endrow}
+			  <if test="search_name != '' ">
+				   and f.name like '%'||#{search_name}||'%'  
+		      </if>
+		                                   )  
+	    where rnum  &gt;= #{startrow} and rnum &lt;= #{endrow}        		    	
+    </select>
+     
+    <select id="getOnlyPaperList" resultType="map">  
+		select * 
+	    from (select rownum rnum, f.*
+			  from (select s.*, m.name
+				    from   (select paper_num, condition, write_date, classification, id
+				            from
+				            <if test="table_name == 'vacation'">
+				            vacation
+				            </if>
+				            <if test="table_name == 'overtime'">
+				            overtime
+				            </if>
+				            ) s
+				    inner join members m 
+				    on s.id = m.id
+				    <if test="!papernum_list.isEmpty()">
+				    where  s.paper_num in
+				           <foreach item="paper_num" index="index" collection="papernum_list" open="(" separator="," close=")">
+				              #{paper_num}
+				           </foreach>
+				    </if> 
+				    <if test="papernum_list.isEmpty()">
+				     where s.paper_num = null
+				    </if>       
+				    order by paper_num desc) f
+			  where rownum &lt;= #{endrow})  
+	    where rnum  &gt;= #{startrow} and rnum &lt;= #{endrow}        		    	
+    </select>
+    
+    <select id="getListCount" resultType="int">
+		select count(*)
+		from
+		 <if test="table_name == 'vacation'">
+		    vacation_condition
+		 </if>
+		 <if test="table_name == 'overtime'">
+			overtime_condition
+		 </if>
+		where reference_person = #{id}
+	</select>
+	
+	<select id="getSendPaperNum" resultType="int">
+		select paper_num
+		from vacation
+		where id = #{id}
+		union
+		select paper_num
+		from overtime
+		where id = #{id}
+	</select>
+	
+	<select id="getSendListCount" resultType="int">
+		select count(*)
+		from
+         <if test="table_name == 'vacation'">
+		    vacation
+		 </if>
+		 <if test="table_name == 'overtime'">
+			overtime
+		 </if>
+		where id = #{id}
+	</select>
+	
+	<select id="selectCondition" resultType="String">
+		select condition
+		from
+         <if test="classification == '휴가신청서'">
+		    vacation_condition
+		 </if>
+		 <if test="classification == '초과근무신청서'">
+			overtime_condition
+		 </if>
+		where reference_person = #{id} and paper_num = #{paper_num} 
+	</select>
+	
+	<select id="selectOvertime" resultType="overtime">
+	select t.* , m.name , m.department , m.position   
+	from members m inner join(select *
+			                  from overtime
+			                  where paper_num = #{paper_num} )t
+	on t.id = m.id		
+	</select>
+	
+	<select id="selectReferencePersonList" resultType="map">
+	select t.* , m.name , m.department , m.position   
+	from members m inner join( select *
+							   from
+						       <if test="classification == '휴가신청서'">
+							   vacation_condition
+							   </if>
+							   <if test="classification == '초과근무신청서'">
+							   overtime_condition
+							   </if>
+							   where paper_num = #{paper_num})t 
+	on t.reference_person = m.id
+	</select>
+	
+	<select id="selectVacation" resultType="vacation">
+	select t.* , m.name , m.department , m.position   
+	from members m inner join(select *
+			                  from vacation
+			                  where paper_num = #{paper_num} )t
+	on t.id = m.id		
+	</select>
+	
+	<update id="updateReferencePersonCondition">
+	update 
+	  <if test="classification == '휴가신청서'">
+	  vacation_condition
+	  </if>
+	  <if test="classification == '초과근무신청서'">
+	  overtime_condition
+	  </if>
+	set condition = #{condition}
+	where reference_person = #{id} and  paper_num = #{paper_num}	
+	</update>
+	
+	<select id="getConditionList" resultType="String">
+	select condition
+	from
+	  <if test="classification == '휴가신청서'">
+	  vacation_condition
+	  </if>
+	  <if test="classification == '초과근무신청서'">
+	  overtime_condition
+	  </if>
+	where paper_num = #{paper_num}	
+	</select>
+	
+	<update id="updateCondition">
+	update 
+	  <if test="classification == '휴가신청서'">
+	  vacation
+	  </if>
+	  <if test="classification == '초과근무신청서'">
+	  overtime
+	  </if>
+	set condition = #{condition}
+	where paper_num = #{paper_num}	
+	</update>
+	
+	<update id="updateVacationNum">
+	update vacation_num
+	set vacation_num = vacation_num - #{vacation_date}
+	where id = #{writer_id}	
+	</update>
+	
+	<select id="SelectMember" resultType="members">
+	select department,admin 
+	from members
+	where id = #{id}
+	</select>
+	
+	<select id="getAllPaperNum" resultType="int">
+		select paper_num
+		from vacation
+		union
+		select paper_num
+		from overtime
+	</select>
+	
+	 <select id="getAllListCount" resultType="int">
+		select count(*)
+		from
+		 <if test="table_name == 'vacation'">
+		    vacation
+		 </if>
+		 <if test="table_name == 'overtime'">
+			overtime
+		 </if>
+	</select>
+	
+	
+	<select id="getSearchListCount" resultType="int">
+	select count(*)
+      from (select paper_num,id
+			from vacation
+			union
+			select paper_num,id
+			from overtime) 
+    where id like '%'||#{search_name}||'%'  	
+	</select>
+	
+	
+	<select id="getSearchId" resultType="String">
+	select id
+	from members
+	where name like '%'||#{search_name}||'%' 		
+	</select>
+	
+	<delete id="delete">
+	delete from
+	  <if test="classification == '휴가신청서'">
+	  vacation
+	  </if>
+	  <if test="classification == '초과근무신청서'">
+	  overtime
+	  </if>
+    where paper_num = #{paper_num}
+	</delete>
+	
+
+    
+</mapper>

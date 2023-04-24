@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gant.myhome.mybatis.mapper.CalendarMapper">
+
+
+ <insert id="add">
+ insert into calendar(id, name, startday, endday, title) values(#{id}, #{name}, #{startday}, #{endday}, #{title})
+ </insert>
+ 
+   <select id="getCalList" resultType="calendar">
+	select id, name, allday, startday, endday, title from calendar
+  </select>
+  
+  <delete id="caldelete">
+			delete from calendar where id = #{id}                   
+   </delete>
+
+  
+  <select id="getadminid" resultType="String">
+	select admin from members where id = #{id}
+  </select>
+  
+  <update id="update">
+		update calendar set startday = #{startday}, endday = #{endday}, title = #{title} where id = #{id}
+   </update>   
+
+  
+</mapper>

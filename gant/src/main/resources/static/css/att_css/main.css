@@ -1,0 +1,179 @@
+* {box-sizing: border-box;
+font-family:"noto sans", sans-serif;
+}
+
+body{ 
+font-family: Roboto;
+}
+
+.main{
+  border:none !important;  
+}
+
+
+#swa_app > section{
+	padding: 20px 25px;
+}
+
+
+.watch{
+	padding-top: 20px !important;
+	padding-bottom: 40px !important;	
+	display: block;
+	text-align: center;
+	margin: auto;
+	
+}
+
+.watch_name{
+margin-left :6%;
+margin-right :6%;	
+font-size: 16px;
+font-weight: 700;
+text-align: center;
+	
+}
+
+
+#watch_names{
+text-align: center;
+}
+
+
+.swa_dial{
+    background: #ffffff;
+	position: relative;
+	display: inline-block;
+	height: 150px;
+	width: 150px;
+	text-align: center;
+	box-shadow: 20px 20px 30px 2px rgba(0,0,0,0.1),
+				-20px -20px 30px 2px rgba(255,255,255,0.4),
+				2px 2px 0 rgba(0,0,0,0.02),
+				-2px -2px 0 rgba(255,255,255,1);
+	border-radius: 50%;
+	margin-left :5%;
+	margin-right :5%;
+	margin-bottom :5%;
+	margin-top :20px;
+}
+
+
+.swa_dial > span{
+	position: relative;
+	display: inline-block;
+	top: 50%;
+	transform: translateY(-100%);
+	font-weight: 600;
+}
+
+
+
+.swa_dial:before{
+	position: absolute;
+	display: block;
+	content: '';
+	height: 90%;
+	width: 90%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	box-shadow: inset 5px 5px 6px -1px rgba(0,0,0,0.15),
+				inset -5px -5px 6px -1px rgba(255,255,255,0.6),
+				1px 1px 0 rgba(0,0,0,0.02),
+				-1px -1px 0 rgba(255,255,255,1);
+	border-radius: 50%;
+}
+
+.swa_dial:after{
+	position: absolute;
+	display: block;
+	content: '';
+	height: 80%;
+	width: 80%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	box-shadow: 5px 5px 6px -1px rgba(0,0,0,0.15),
+				-5px -5px 6px -1px rgba(255,255,255,0.6),
+				1px 1px 0 rgba(0,0,0,0.02),
+				-1px -1px 0 rgba(255,255,255,1);
+	border-radius: 50%;
+}
+
+
+#workbutton{
+margin-bottom: 50px;
+}
+
+#gotowork,#leavework{
+display: inline-block;
+width: 49%;
+text-align: center;
+}
+.btn{
+height: 35px;
+width: 250px
+}
+
+#work{
+border: 2px solid #c5cbd163;
+margin: auto;
+width: 80%;
+height: 100px;
+margin-bottom: 30px;
+border-radius: 5px
+}
+
+.progress{
+margin: auto;
+width: 80%;
+}
+
+#commute_record{
+display: block;
+float: right;
+width: 86px;
+height: 28px;
+font-size: 11px;
+}
+#my_week{
+margin-top: 10px;
+margin-bottom: 10px;
+font-size: 14px;
+font-weight: 700;
+text-align: center;
+margin-left: 100px;	
+padding-top : 6px;
+padding-bottom : 5px;	
+}
+
+.progress {
+height: 1.7rem;
+}
+
+#work_week,#work_today,#overtime{
+font-size:20px;
+margin-top: 12px;		
+}
+
+#work_week,#work_today,#overtime{
+color:#070707	
+}
+
+.watch_name,#my_vacation,#my_week{
+	color:#000000
+}
+
+#my_vacation{
+margin-top: 10px;
+margin-bottom: 10px;
+font-size: 14px;
+font-weight: 700;
+text-align: center;	
+padding-top : 6px;
+padding-bottom : 5px;	
+}
+
+
+.main { margin-left:7.5%}

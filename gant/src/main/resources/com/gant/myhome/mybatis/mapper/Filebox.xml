@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gant.myhome.mybatis.mapper.FileboxMapper">
+
+	<insert id="insert">
+		<selectKey resultType="int" order="BEFORE" keyProperty="file_num">
+			select nvl(max(file_num),0)+1 from filebox
+		</selectKey>
+		insert into filebox 
+		(p_no, file_num, id)
+		values (#{p_no}, #{file_num}, #{id})
+	</insert>
+	
+	<select id="selectFile" resultType="map">
+		select file_num, id, file_name, extension, file_save_path  
+		from filebox natural join f_fileinfo  
+		where p_no = #{p_no} 
+		and included_folder_num = #{included_folder_num}
+	</select>
+	
+	<select id="selectUploader" resultType="String">
+		select id 
+		from filebox 
+		where file_num = #{file_num}
+	</select>
+	
+	<delete id="delete">
+		delete from filebox 
+		where file_num = #{file_num}
+	</delete>
+		
+	<delete id="deleteFileinFolder">
+		delete
+		from filebox 
+		where file_num in 			
+						(select file_num
+						from f_fileinfo
+						where included_folder_num in 
+													(select folder_num 
+													from f_folder 
+													where p_no = #{p_no}
+													and folder_path like #{folder_path}||'%')
+						) 	<!-- 삭제할 폴더 ~ 하위경로 폴더의 번호에 포함되는 파일들을 삭제 -->
+	</delete>
+	
+</mapper>

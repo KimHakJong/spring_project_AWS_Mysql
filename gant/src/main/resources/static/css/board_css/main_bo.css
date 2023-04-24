@@ -1,0 +1,85 @@
+* {box-sizing: border-box;
+font-family:"noto sans", sans-serif;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+select.form-control{
+width: auto;
+margin-bottom: 2em;
+display: inline-block;
+}
+
+.main{
+  border:none !important;  
+}
+
+td{
+ font-size : 15px;
+}
+
+.table a{
+ color :  #2d2b2b	
+}
+
+th,td{color :  #2d2b2b	
+} 	
+
+
+.rows{
+text-align: right;
+}
+
+.gray {
+ color: #2d2b2b;
+}
+
+#th1{width:8%}
+#th2{width:47%}
+#th3{width:13%}
+#th4{width:14%}
+#th5{width:9%}
+#th6{width:9%}
+
+.table{
+ margin-top:60px;
+}
+
+#board_write{
+ margin-bottom: 10px
+}
+
+.input-group.mb-3{
+	width:400px;
+	margin-left : 64%
+}
+
+.th1{
+background-color: #ffffff !important;
+color : black !important;
+border-top : 0px solid #ffffff !important;
+}
+
+.main{
+padding-top: 0	;
+}
+
+
+#search{
+margin-left : 180px;
+}
+
+	
+#search_btn{
+ background-color : #009CFF;
+ border:none;	
+}
+
+
+ thead{
+		 background-color:#4da7ed;
+	   }
+ .th2{
+	  color: #fff 
+ }

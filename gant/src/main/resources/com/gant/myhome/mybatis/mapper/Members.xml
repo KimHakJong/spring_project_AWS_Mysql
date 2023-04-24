@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- SQL맵퍼파일은 xml이기 때문에 제일먼저 xml선언이 옵니다. -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gant.myhome.mybatis.mapper.MembersMapper">
+
+  <select id="idCheck" resultType="members">
+     select * from members where id = #{id}
+  </select>
+    
+  <insert id="insert">
+      insert into members
+      (admin,id,password,name,jumin,phone_num,email,post,address,department,position,auth)
+      values 
+      (#{admin}, #{id}, #{password},#{name},#{jumin},#{phone_num},#{email},#{post},#{address},#{department}, #{position}, #{auth})
+  </insert>
+  
+  <select id="findIdCheck" resultType="members">
+  	select id, name, email 
+  	from members 
+  	where name = #{name} 
+  	and email = #{email}
+  </select>
+  
+  <select id="findPassCheck" resultType="members">
+  	select id, password, name, email 
+  	from members 
+  	where id = #{id}
+  </select>
+  
+  <update id="passUpdate">
+  	update members 
+  	set password = #{password} 
+  	where id = #{id} 
+  </update>
+  
+  <select id="getMemberInfo" resultType="members">
+	select * 
+	from members 
+	where id = #{id}
+  </select>
+  
+   <sql id="search_">
+   <if test="searchfield != null">
+	  and
+		<choose>
+		   <when test='searchfield=="name"'>name</when> 
+		   <when test='searchfield=="department"'>department</when> 
+		   <when test='searchfield=="phone_num"'>phone_num</when> 
+		</choose>
+		 like '%' || #{searchword} || '%' 
+   </if> 
+  </sql>
+  
+  <select id="getMembersCount" resultType="int">
+     select count(*)
+     from members 
+	 where admin != 'true'
+	 <include refid="search_"/>
+  </select>
+  
+  <select id="getMembersList" resultType="members">
+       select * 
+	   from (select a.*, rownum rnum 
+			 from (select *
+			       from members 
+			       where admin != 'true'
+					 	<include refid="search_"/>
+			       order by name) a                                 
+			 where rownum &lt;= #{end} 
+			) 
+	   where rnum between #{start} and #{end} 
+  </select>
+  
+  <select id="isAdminHuman" resultType="members">
+  	select admin, department 
+  	from members 
+  	where id = #{id}
+  </select>
+  
+  <select id="selectByDname" resultType="String">
+  	select name 
+  	from members 
+  	where department = #{department}
+  </select>
+  
+  <select id="checkCommute" resultType="String">
+  	select checkbutton
+  	from attendance 
+  	where id = #{id}
+  </select>
+  
+  <delete id="delete">
+  	delete from members 
+  	where id = #{listid}
+  </delete>
+  
+  <select id="getMembersList_ajax" resultType="members">
+       select * 
+	   from members 
+	   order by name
+  </select>
+  
+    <select id="getSearchMembersList_ajax" resultType="members">
+       select * 
+	   from members 
+	   where name like '%' || #{name} || '%' 
+	   order by name
+  </select>
+  
+  <select id="getMemberInfo2" resultType="members">
+  	select * 
+  	from members 
+  	where name = #{name}
+  </select>
+</mapper>

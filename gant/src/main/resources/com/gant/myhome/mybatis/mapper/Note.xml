@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- SQL맵퍼파일은 xml이기 때문에 제일먼저 xml선언이 옵니다. -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--  Mapper 인터페이스의 패키지 명과 이름을 namespace로 설정합니다. -->
+<mapper namespace="com.gant.myhome.mybatis.mapper.NoteMapper">
+     
+     <!-- 
+		1. 태크에 id 속성은 Mapper 인터페이스에 추가한 메서드명과 동일하게 작성됩니다.
+		2. resultType속성은 연동시킬 메서드에 명시된 반환 타입을 작성해 줍니다.
+		-->
+	<insert id="insertNoteFile">
+	 insert into notefile
+     (file_num, original_filename, extension, save_folder) 
+     values
+	 (notefile_seq.NEXTVAL,#{original_filename},#{extension},#{save_folder})  
+	</insert>	
+	
+	<select id="selectFileNum" resultType="int">
+	select max(file_num)
+	from notefile	
+	</select>
+		
+  	<insert id="insertNoteDelete">
+	 insert into note_delete
+     (delete_num, kind, delete_table) 
+     values
+	 (note_delete_seq.NEXTVAL,#{table_kind},'no')  
+	</insert> 
+	
+	<select id="selectDeleteNum" resultType="int">
+	select max(delete_num)
+	from note_delete	
+	</select> 
+   
+    <insert id="insertNote">
+	 insert into note
+     (note_num, delete_num, id, to_id, subject, content ,file_num ) 
+     values
+	 (note_seq.NEXTVAL,#{delete_num},#{id},#{to_id},#{subject},#{content},#{file_num})  
+	</insert>
+    
+    <select id="selectNoteNum" resultType="int">
+	select max(note_num)
+	from note	
+	</select>  
+	
+	
+	<insert id="insertNoteTo">
+	 insert into note_to
+     (note_num, delete_num, id, to_id, subject, content,read_check,file_num ) 
+     values
+	 (#{note_num},#{delete_num},#{id},#{to_id},#{subject},#{content},'false',#{file_num})  
+	</insert>
+	
+	  
+	
+	<select id="getNoteNum" resultType="int">
+	select count(*)
+	from note_delete d inner join(select *
+								  from note_to
+								  where to_id = #{id}
+								  <if test="search_subject != '' ">
+								   and subject like '%'||#{search_subject}||'%'  
+								  </if> 													                         
+								)t
+	on d.delete_num = t.delete_num
+	where d.delete_table = #{delete_table}
+	</select>
+	
+	<select id="getNoteList" resultType="note">
+	select *	
+	from   (select rownum num , r.*	
+			from	(select m.name from_name , n.* 
+					 from members m inner join(
+					                           select d.delete_table , t.*  
+											   from note_delete d inner join(select *
+													                         from note_to
+													                         where to_id = #{id}
+													                         <if test="search_subject != '' ">
+																				 and subject like '%'||#{search_subject}||'%'  
+																		     </if> 													                         
+													                         )t
+							                   on d.delete_num = t.delete_num
+								               where d.delete_table =  #{delete_table})n
+				     on m.id = n.id 			
+				     order by note_num desc) r
+				     where rownum &lt;= #{endrow})
+	 where num  &gt;= #{startrow} and num &lt;= #{endrow}     
+	</select>
+	
+	<select id="sendNoteNum" resultType="int">
+	select count(*)
+	from note_delete d inner join(select *
+								  from note
+								  where id = #{id}
+								  <if test="search_subject != '' ">
+								   and subject like '%'||#{search_subject}||'%'  
+								  </if> 													                         
+								)t
+	on d.delete_num = t.delete_num
+	where d.delete_table = #{delete_table}
+	</select>
+	
+	
+    <select id="sendNoteList" resultType="note">	
+	select *	
+	from   (select rownum num , r.*	
+			from	(select d.delete_table , t.*  
+					 from note_delete d inner join(select *
+												   from note
+												   where id = #{id}
+												   <if test="search_subject != '' ">
+													and subject like '%'||#{search_subject}||'%'  
+												   </if> 	
+												   )t
+					 on d.delete_num = t.delete_num
+					 where d.delete_table = #{delete_table}
+					 order by note_num desc)r			    				     
+			where rownum &lt;= #{endrow})
+	 where num  &gt;= #{startrow} and num &lt;= #{endrow}     
+	</select>
+	
+	<select id="selectName" resultType="String">
+	select name
+	from members
+	where id = #{id}
+	</select>
+	
+	<select id="selectNotefile" resultType="int">
+	select count(*)
+	from notefile
+	where file_num = #{file_num}
+	</select>
+	
+	<select id="selectNoteTo" resultType="java.util.Map">
+	SELECT m2.department AS to_department, m2.position AS to_position, m2.name AS to_name, s.*
+	FROM members m2 INNER JOIN (
+								    SELECT m.department AS from_department, m.position AS from_position, m.name AS from_name, t.*
+								    FROM members m  INNER JOIN (
+								                               <if test="notefile != 0 ">
+								                                select f.original_filename, f.extension , f.save_folder , a.*
+																FROM notefile f INNER JOIN (
+															   </if>	
+																                            SELECT *
+																					        FROM note_to
+																					        WHERE to_id = #{id} AND note_num = #{note_num}
+															   <if test="notefile != 0 ">					        
+																					        ) a
+																ON f.file_num = a.file_num
+															   </if>
+																) t
+								    ON m.id = t.id) s
+	ON m2.id = s.to_id							
+	</select>
+	
+	<update id="ReadCheck">
+	update note_to
+	set read_check = 'true'
+	where note_num = #{note_num} and to_id = #{id}
+	</update>
+	
+	
+	<update id="getBasket">
+	    <selectKey resultType="int" order="BEFORE" keyProperty="delete_num">
+           select delete_num
+           from
+           <if test="type == 'get' ">
+            note_to
+           </if>
+           <if test="type == 'send' ">
+           note
+           </if>  
+           where note_num = #{note_num}
+           <if test="type == 'get' ">
+            and to_id = #{id} 
+           </if>                       
+        </selectKey>
+	  update note_delete
+	  set delete_table = 'yes', delete_date = TO_CHAR(CURRENT_DATE + 7, 'yyyymmdd')
+	  where delete_num = #{delete_num}
+	</update>
+	
+	<select id="selectNote" resultType="java.util.Map">
+
+	<if test="notefile != 0 ">
+	select f.original_filename, f.extension , f.save_folder , a.*
+	FROM notefile f INNER JOIN (
+	</if>	
+								SELECT *
+								FROM note
+								WHERE note_num = #{note_num}
+	<if test="notefile != 0 ">					        
+								) a
+	ON f.file_num = a.file_num
+	</if>
+																
+	</select>
+	
+	
+	<select id="selectMembersdata" resultType="members">
+	select department, position, name
+	from members
+	where id = #{toid} 
+	</select>
+	
+	
+	<select id="selectDeleteNums" resultType="int">
+	       select delete_num
+           from
+           <if test="type == 'get' ">
+            note_to
+           </if>
+           <if test="type == 'send' ">
+           note
+           </if>  
+           where note_num = #{note_num}
+           <if test="type == 'get' ">
+            and to_id = #{id} 
+           </if> 
+	</select>
+	
+	<delete id="Delete">
+     delete from note_delete
+     where delete_num = #{delete_num}    
+	</delete>
+	
+	
+	<select id="selectDeleteDate" resultType="int">
+	select delete_num
+	from note_delete
+	where delete_date = #{delete_date}
+	</select>
+	
+	<update id="restore">
+	    <selectKey resultType="int" order="BEFORE" keyProperty="delete_num">
+           select delete_num
+           from
+           <if test="type == 'get' ">
+            note_to
+           </if>
+           <if test="type == 'send' ">
+           note
+           </if>  
+           where note_num = #{note_num}
+           <if test="type == 'get' ">
+            and to_id = #{id} 
+           </if>                       
+        </selectKey>
+	  update note_delete
+	  set delete_table = 'no', delete_date = ''
+	  where delete_num = #{delete_num}
+	</update>
+	
+</mapper>

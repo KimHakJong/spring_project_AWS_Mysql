@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- SQL맵퍼파일은 xml이기 때문에 제일먼저 xml선언이 옵니다. -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gant.myhome.mybatis.mapper.MemoMapper">
+	
+	<select id="getMemoList" resultType="memo">
+		select *
+		from memo 
+		where id = #{id} 
+		order by update_date desc
+	</select>
+	
+	<insert id="add">
+		<selectKey resultType="int" order="BEFORE" keyProperty="num">
+			select nvl(max(num),0)+1 from memo 
+		</selectKey>
+		insert into memo 
+		(num, id, subject, content, background, color) 
+		values (#{num}, #{id} , #{subject}, #{content}, #{background}, #{color})
+	</insert>
+	
+	<select id="getMemoOne" resultType="memo">
+		select * 
+		from memo 
+		where num = #{num}
+	</select>
+	
+	<insert id="update">
+		update memo 
+		set subject = #{subject}, content = #{content}, background = #{background}, color = #{color}, update_date = #{update_date} 
+		where id = #{id} and num = #{num}	
+	</insert>
+	
+	<delete id="delete">
+		delete from memo 
+		where num = #{num} 
+	</delete>
+	
+	
+</mapper>

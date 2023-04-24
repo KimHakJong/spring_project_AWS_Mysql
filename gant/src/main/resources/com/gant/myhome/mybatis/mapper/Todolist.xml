@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gant.myhome.mybatis.mapper.TodolistMapper">
+     
+ 	 
+	 
+	<select id="getListCount" resultType="int">
+		select count(*) from todolist where p_no = #{p_no}
+	</select>	
+	
+	<select id="getSendListCount" resultType="int">
+		select count(*) from todolist where p_no = #{p_no} and board_id = #{id}
+	</select>	
+	
+	<select id="getSendSearchListCount" resultType="int">
+		select count(*) from todolist where p_no = #{p_no} and board_id = #{id} and board_subject like '%'||#{search_word}||'%'
+	</select>	
+	
+	<select id="get_name" resultType="String">
+		select p_mnames from project where p_no = #{p_no}
+	</select>	
+		
+	<select id="get_id" resultType="String">
+		select p_mids from project where p_no = #{p_no}
+	</select>	
+	
+
+	<select id="getTodolist" resultType="Todolist">
+	select * from (
+  select t.*, ROW_NUMBER() over (order by state DESC) as rnum
+  from todolist t
+  where p_no = #{p_no} and board_id = #{id}
+  order by state desc) where rnum between #{start} and #{end}
+	</select>
+	
+	<select id="getSearchTodolist" resultType="Todolist">
+	select * from (
+  select t.*, ROW_NUMBER() over (order by state DESC) as rnum
+  from todolist t
+  where p_no = #{p_no} and board_id = #{id}
+  order by state desc) where rnum between #{start} and #{end} and board_subject like '%'||#{search}||'%'
+	</select>
+	
+	<select id="getTodolist2" resultType="Todolist">
+	select c.board_r_id, c.board_num, c.p_no from (select b.p_no, b.board_r_id, b.board_num from (select * from todolist order by state desc) b) c where c.p_no = #{p_no} 
+	</select>
+	
+	<select id="getTodolist3" resultType="Todolist">
+	select c.*
+from (
+  select rownum rnum2, b.*
+  from (
+    select board_num, p_no, board_id, board_r_id, board_subject, board_content, deadline, state, rownum rnum
+    from todolist
+    where p_no = #{p_no} and board_num = #{board_num}
+    order by state desc
+  ) b
+) c
+where c.rnum2 between #{start} and #{end}
+	</select>
+	
+	<select id="getSearchTodolist3" resultType="Todolist">
+	select c.*
+from (
+  select rownum rnum2, b.*
+  from (
+    select board_num, p_no, board_id, board_r_id, board_subject, board_content, deadline, state, rownum rnum
+    from todolist
+    where p_no = #{p_no} and board_num = #{board_num}
+    order by state desc
+  ) b
+) c
+where c.rnum2 between #{start} and #{end} and c.board_subject like '%'||#{search}||'%'
+	</select>
+	
+	
+	<insert id = "insertBoard">
+		<selectKey resultType="int" order="BEFORE" keyProperty="board_num">
+			select nvl(max(board_num), 0)+1 from todolist	
+		</selectKey>
+		insert into todolist(board_num, p_no, board_id, board_r_id, board_subject, board_content, deadline, state)
+		values(#{board_num}, #{p_no}, #{board_id}, #{board_r_id}, #{board_subject}, #{board_content}, #{deadline}, #{state})	
+	</insert>
+		
+	<select id="getDetail" resultType="Todolist">
+		select * from todolist where board_num = #{num}
+	</select>
+	
+
+	
+	<update id="boardModify">
+      update todolist
+      set board_subject = #{board_subject},
+         board_content = #{board_content},
+         deadline = #{deadline},
+         state = #{state}
+      where board_num=#{board_num}
+   </update>
+   
+
+	
+	<delete id="boardDelete">
+	<![CDATA[
+		delete from todolist where board_num = #{board_num}
+	]]>
+	</delete>
+	
+
+</mapper>

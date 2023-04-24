@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SQL맵퍼파일은 xml이기 때문에 제일먼저 xml선언이 옵니다. -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gant.myhome.mybatis.mapper.ReservationMapper">
+	
+	<insert id="insert">
+		<selectKey resultType="int" order="BEFORE" keyProperty="num">
+			select nvl(max(num),0)+1 from Reservation
+		</selectKey>
+		insert into Reservation 
+		(num, id, purpose,  names, type, resource_name, day, start_time, end_time) 
+		values (#{num}, #{id}, #{purpose}, #{names}, #{type}, #{resource_name}, #{day}, #{start_time}, #{end_time})
+	</insert>
+	
+	<select id="selectRecentInsertion" resultType="int">
+		select max(num) 
+		from Reservation 
+	</select>
+	
+	<delete id="deletePastData">
+		delete from Reservation 
+		where day &lt;= #{yesterday}
+	</delete>
+	
+	<select id="selectInfo" resultType="reservation">
+		select * 
+		from Reservation 
+		where num = #{num}
+	</select>
+	
+	<delete id="delete">
+		delete from Reservation 
+		where num = #{num}
+	</delete>
+	
+	<update id="update">
+		update Reservation 
+		set purpose = #{purpose}, names = #{names}, day = #{day},
+			start_time = #{start_time}, end_time = #{end_time}  
+		where num = #{num}
+	</update>
+	
+	<select id="selectById" resultType="reservation">
+		select *
+		from ( select rownum rnum, b.*
+			 from ( select * 
+			        from Reservation 
+			   		where id = #{id} 
+			   		<if test='start_day!=null or end_day!=null'>
+			   		and day between #{start_day} and #{end_day}
+			   		</if>
+			   		order by day
+			 	  )b 
+			 where rownum &lt;= #{end} 
+			 ) 
+		where rnum between #{start} and #{end}
+	</select>
+	
+	<select id="selectCountById" resultType="int">
+		select count(*)
+		from Reservation 
+		where id = #{id} 
+		<if test='start_day!=null or end_day!=null'>
+		and day between #{start_day} and #{end_day}
+		</if>
+		order by day 
+	</select>
+</mapper>

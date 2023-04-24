@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- SQL맵퍼파일은 xml이기 때문에 제일먼저 xml선언이 옵니다. -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gant.myhome.mybatis.mapper.CommentMapper">
+   
+   <select id="getListCount" resultType="int">
+      select count(*)
+      from com
+      where comment_board_num = #{comment_board_num}   
+   </select>
+   
+	<select id="getCommentList" resultMap="commentResultMap">
+	    SELECT num, id, content, reg_date, comment_re_lev, comment_re_seq, comment_re_ref, profileimg 
+	    FROM com NATURAL JOIN members 
+	    WHERE comment_board_num = #{comment_board_num}
+	    ORDER BY comment_re_ref 
+	    <if test='sort == "asc"'>ASC</if>
+	    <if test='sort == "desc"'>DESC</if>
+	    , comment_re_seq ASC
+	</select>
+	
+	<resultMap id="commentResultMap" type="comment">
+	    <result property="num" column="num"/>
+	    <result property="id" column="id"/>
+	    <result property="content" column="content"/>
+	    <result property="reg_date" column="reg_date"/>
+	    <result property="comment_re_lev" column="comment_re_lev"/>
+	    <result property="comment_re_seq" column="comment_re_seq"/>
+	    <result property="comment_re_ref" column="comment_re_ref"/>
+	    <result property="profileimg" column="profileimg"/>
+	</resultMap>
+
+   
+   <select id="commentselect" resultType="comment">
+     select *
+     from com
+     where num = #{num}
+   </select>
+   
+   <insert id="commentsInsert">
+    INSERT INTO com (num,id,content,reg_date,comment_board_num,comment_re_lev,comment_re_seq,comment_re_ref)
+    VALUES (comm_seq.nextval,#{id},#{content},sysdate,#{comment_board_num},#{comment_re_lev},#{comment_re_seq},comm_seq.nextval)
+   </insert>
+
+ 
+   <update id="commentsUpdate">
+    update com
+    set content = #{content}
+    where num = #{num}
+   </update>
+   
+   <delete id="commentsDelete">
+   <![CDATA[
+   delete from com 
+		  where comment_re_ref = #{comment_re_ref}
+		  and comment_re_lev >= #{comment_re_lev} 
+		  and comment_re_seq >= #{comment_re_seq} 
+		  and comment_re_seq <=( nvl((select min(comment_re_seq)-1 
+				                      from com 
+				                      where comment_re_ref = #{comment_re_ref} 
+				                      and comment_re_lev = #{comment_re_lev} 
+				                      and comment_re_seq > #{comment_re_seq}) , 
+				                     (select max(comment_re_seq) 
+				                      from com 
+				                      where comment_re_ref = #{comment_re_ref})) 
+			                          )
+	]]>				                          
+   </delete>
+   
+   <update id="pluscomments">
+   update com 
+		    set   comment_re_seq=comment_re_seq +1 
+		    where comment_re_ref= #{comment_re_ref}
+		    and   comment_re_seq> #{comment_re_seq} 
+   </update>
+   
+    <insert id="commentsreply">
+    INSERT INTO com 
+    VALUES (comm_seq.nextval,#{id},#{content},sysdate,#{comment_board_num},#{comment_re_lev},#{comment_re_seq},#{comment_re_ref})
+    </insert>
+   
+ 
+</mapper>

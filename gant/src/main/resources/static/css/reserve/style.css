@@ -1,0 +1,123 @@
+.ui-datepicker-inline.ui-datepicker.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all {
+  padding: 10px 20px 10px 20px;
+}
+.ui-widget-header { border: none !important; background-color: transparent !important; }
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+    border: 1px solid #fff !important;
+    background: #fff !important;
+    font-weight: bold !important;
+    color: #454545;
+    text-align: center !important;
+    font-size: 14px;
+    padding: 8px 0px 8px 0px;
+}
+.ui-datepicker .ui-datepicker-prev {
+  left: 7px !important;
+}
+.ui-datepicker .ui-datepicker-next {
+  right: 8px !important;
+}
+.ui-widget.ui-widget-content {
+    width: 350px;
+}
+
+.ui-datepicker .ui-datepicker-title {
+    font-size: 16px;
+}
+
+.ui-datepicker .ui-datepicker-header {
+    width: 100%;
+}
+
+.ui-datepicker th {
+    font-size: 15px;
+    padding: 0.4em !important;
+}
+
+.ui-datepicker-calendar th:first-child {
+	color: #ff2e47 !important;
+}
+
+.ui-datepicker-calendar th:nth-last-child(1) {
+	color: #2baaff !important;
+}
+
+.ui-datepicker-calendar tr td:first-child a {
+  color: #ff2e47;
+}
+.ui-datepicker-calendar tr td:nth-last-child(1) a {
+	color: #2baaff;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active{
+	
+    background: #26abff !important;
+    color: white !important;
+    border-radius: 50% !important;
+}
+
+.mylist {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  width: 85%;
+  height: 80%;
+  margin-top: 5%;
+  margin-bottom: 30px;
+}
+
+.list_table {
+  min-width: 1000px !important;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+    border-radius:10px; }
+  
+  .list_table thead th {
+    border: transparent;
+    padding: 15px 15px;
+    font-size: 16px;
+    color: #fff;
+    background:#3abff7;
+  }
+  .list_table thead th:first-child{
+  border-radius:.4em 0px 0px 0px
+  }
+    .list_table thead th:last-child{
+  border-radius:.0px .4em 0px 0px
+  }
+  .list_table tbody tr {
+    margin-bottom: 10px;
+    
+    -webkit-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29);
+    -moz-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29);
+    box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29); }
+  .list_table tbody th, .list_table tbody td {
+    border: none;
+    padding: 15px 15px;
+    font-size: 16px;
+    background: #fff; }
+
+.list_table tr td:nth-child(1){
+	width:11%;    
+}
+.list_table tr td:nth-child(2){
+	width:11%;    
+}
+.list_table tr td:nth-child(3){
+	width:14%;    
+}
+.list_table tr td:nth-child(4){
+	width:22%;    
+}
+.list_table tr td:nth-child(5){
+	width:24%;    
+}
+.list_table tr td:nth-child(6){
+	width:18%;
+}
+.persons img {
+	width:36px;
+	height:36px;
+}

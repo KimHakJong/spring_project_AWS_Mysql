@@ -1,0 +1,868 @@
+.reserve_main {
+    position: relative;
+    width: 85%;
+    height: 80%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    margin-top:4.75%;
+    margin-bottom:60px;
+}
+.content{
+	overflow:hidden;
+}
+.reserve_head{
+	width:100%;
+	height:170px;
+	text-align:center;
+}
+
+#add_resource{
+	width:115px;
+	height:50px;
+	background:white;
+	font-size:18px;
+	color:#33C43C;
+	border-radius:10px;
+	border:2px solid #33C43C;
+	position:absolute;
+	left:0px;
+	font-weight:bold;
+	display:none;
+}
+#add_resource:focus{
+    box-shadow: 0 0 0 0.25rem #33c43c7d;
+}
+.show_date {
+    display: inline-block;
+    font-weight: bold;
+    color: black;
+    font-size: 25px;
+    margin-top:100px;
+}
+
+.show_date img {
+    width: 32px;
+    position: relative;
+    height: 32px;
+    margin-left: 10px;
+    top: -2.5px;
+}
+
+.datepicker {
+	display:block;
+	position:absolute;
+    left: 36%;
+}
+
+.head_buttondiv {
+	position:absolute;
+	right:0px;
+	top:0px;
+   
+}
+.head_button1, .head_button2{
+ height: 50px;
+    width: 115px;
+    font-size:18px;
+    border: none;
+    color: white;
+    background: #26abff;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.head_button1:focus, .head_button2:focus{
+    box-shadow: 0 0 0 0.25rem rgba(0,156,255,0.5);	
+}
+
+button.head_button1 {
+    color: #26abff;
+    background: white;
+    border: 2px solid #26abff;
+    margin-right: 10px;
+}
+.ui-datepicker-inline.ui-datepicker.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all {
+  padding: 10px 20px 10px 20px;
+}
+.ui-widget-header { border: none !important; background-color: transparent !important; }
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-button, html .ui-button.ui-state-disabled:hover, html .ui-button.ui-state-disabled:active {
+    border: 1px solid #fff !important;
+    background: #fff !important;
+    font-weight: bold !important;
+    color: #454545;
+    text-align: center !important;
+    font-size: 14px;
+    padding: 8px 0px 8px 0px;
+}
+.ui-datepicker .ui-datepicker-prev {
+  left: 7px !important;
+}
+.ui-datepicker .ui-datepicker-next {
+  right: 8px !important;
+}
+.ui-widget.ui-widget-content {
+    width: 350px;
+}
+
+.ui-datepicker .ui-datepicker-title {
+    font-size: 16px;
+}
+
+.ui-datepicker .ui-datepicker-header {
+    width: 100%;
+}
+
+.ui-datepicker th {
+    font-size: 15px;
+    padding: 0.4em !important;
+}
+
+.ui-datepicker-calendar th:first-child {
+	color: #ff2e47 !important;
+}
+
+.ui-datepicker-calendar th:nth-last-child(1) {
+	color: #2baaff !important;
+}
+
+.ui-datepicker-calendar tr td:first-child a {
+  color: #ff2e47;
+}
+.ui-datepicker-calendar tr td:nth-last-child(1) a {
+	color: #2baaff;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active{
+	
+    background: #26abff !important;
+    color: white !important;
+    border-radius: 50% !important;
+}
+#updateForm img.ui-datepicker-trigger, #insertForm img.ui-datepicker-trigger {
+    width: 25px;
+    height: 25px;
+    position: relative;
+    right: 42px;
+    bottom: 3px;
+}
+
+div#explain {
+    margin-bottom: 10px;
+    margin-top: 40px;
+    margin-left:2.5px;
+}
+#explain div {
+    width: 17px;
+    height: 17px;
+    background: #3abff7;
+    display: inline-block;
+    border-radius: 3px;
+}
+#explain span {
+    position: relative;
+    bottom: 2px;
+    left: 7px;
+    color:black !important;
+}
+.reserve_time{
+	width:100%;
+	height:40px;
+}
+
+#noadd{
+	height:200px !important;
+}
+#noadd h4 {
+	text-align:center;
+}
+/* 상세보기 모달 */
+
+#detail_reservation .modal-dialog{
+	max-width:530px;
+	top:17%;	
+}
+
+#detail_subject{
+    text-align: left;
+    margin-top: 30px;
+    margin-left: 48px;
+    color: #26abff;
+}
+
+#detail_reservation .modal-body{
+	padding: 10px 48px 20px 48px;
+}
+
+.detail_table{
+	color: black !important;
+}
+.detail_table tr{
+	height:35px;
+	line-height:35px;
+}
+.detail_th {
+	width:27%;
+	padding-left:0px;
+}
+.detail_table tr td{
+	padding-right:0px;
+}
+.detail_th + td {
+	width:25%;
+}
+.detail_th + td + td{
+	width:53%;
+}
+#detail_buttondiv{
+	float:right;
+}
+#detail_buttondiv button{
+	border:none;
+	border-radius:5px;
+	width:65px;
+	height:40px;
+	font-weight:bold;
+	border: none;
+	color:white;
+}
+#detail_to_update{
+	background:#009CFF !important;
+	position:absolute;
+	left:48px;
+	opacity:0.8;
+}
+#detail_to_update:hover{
+	opacity:1;
+}
+#detail_to_delete{
+	background:#e40f0f !important;
+	position:absolute;
+	left:121px;
+	opacity:0.8;
+}
+#detail_to_delete:hover{
+	opacity:1;
+}
+#detail_close{
+	background:white;
+	color:#26abff !important;
+	border:2px solid #26abff !important;
+}
+#detail_close:hover{
+	color:white !important;
+	background:#26abff;
+}
+/* 상세보기 모달 끝 */
+/*수정 모달*/
+#reserve_update .modal-dialog{
+    max-width: 600px !important;
+    top:7%;
+}
+#update_title{
+	text-align:center ;
+	margin-top:40px;
+}
+#update_close{
+    border: none;
+    outline: none;
+    background: transparent;
+    color: black;
+    position: absolute;
+    left: 93%;
+    top: -1%;
+    font-size: 35px;
+}
+
+#updateForm{
+	padding:10px 30px;
+}
+.update_menudiv:first-child{
+	margin-top:15px !important;
+}
+.update_menudiv{
+	clear:both;
+	margin: 30px 0px;
+	height:50px;
+}
+#updateForm label{
+display:inline-block;
+width:26%;
+color:black;
+line-height:50px;
+font-weight:bold;
+}
+#updateForm input{
+	width:73%;
+	float:right;
+	height: 50px;
+    border: 1px solid #C4C5C8;
+    border-radius: 10px;
+    padding: 15px;
+	
+}
+#updateForm input:focus{
+	border:2px solid #26abff;
+	outline:none;
+}
+#names_label{
+	position:absolute;
+}
+.wrap_namediv{
+	height:50px;
+}
+
+div#update_namediv {
+    width: 54%;
+    display: inline-block;
+    margin-left:26.3%;
+}
+
+.update_name{
+	display:inline-block;
+	background:#3abff7;
+	color:white;
+	font-weight:bold;
+	border-radius:25px;
+	font-size:14px;
+	padding:7px;
+	margin:4px 3px;
+	
+}
+.etc_name {
+    background: #C3C3C3;
+    width: 55.99px;
+    text-align: center;
+}
+.etc_show{
+	display:none;
+}
+#member_search2 {
+    border: 2px solid #26abff;
+    position: absolute;
+    margin-top: 2px;
+    right: 47px;
+    height: 50px;
+    border-radius: 5px;
+    color: #26abff;
+    background: white;
+    width: 100px;
+    font-weight:bold;
+}
+
+#update_type, #update_resource_name{
+	height:50px;
+	border:1px solid #C4C5C8;
+	border-radius:5px;
+	width:32%;
+	background:white;
+	padding:0px 15px;
+}
+#update_type{
+}
+
+select option:disabled{
+	display: none;
+}
+
+#update_resource_name{
+	float:right;
+	width:38%;
+}
+#update_day{
+	width:37% !important;
+	float:none !important;
+}
+
+.wrap_daydiv{
+	margin-bottom:25px !important;
+}
+.wrap_timediv{
+	margin-top:25px !important;
+}
+
+#update_timediv {
+    width: 73%;
+    height: 100%;
+    display: inline-block;
+    border: none;
+    float: right;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    border: 1px solid #C4C5C8;
+    border-radius: 10px;
+    scrollbar-width: thin;
+	scrollbar-color: #26abff transparent;
+}
+
+#update_timediv::-webkit-scrollbar {
+    height:5px !important;
+}
+#update_timediv::-webkit-scrollbar-thumb {
+    background-color: #26abff !important;
+    border-radius:10px;
+}
+#update_timediv::-webkit-scrollbar-track {
+    background-color: transparent !important;
+}
+  
+.update_time {
+    display: inline-block;
+    width: 80px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    background: #3abff7;
+    color: white;
+    border-radius: 5px;
+    display:none;
+}
+#update_submit{
+	height:55px !important; width:100%;display:block; 
+	font-weight:bold; margin:0 auto; opacity:1;
+    border-radius:5px;height:50px; font-size:18px;
+    background-color:white; color:#26abff; border:2px solid #26abff;
+    outline:none;}
+    
+#update_submit:hover{
+	background-color:#26abff;
+	border:1px solid #26abff;
+	color:white;
+}    
+/* 수정 모달 끝 *
+/*생성 모달*/
+#reserve_insert .modal-dialog{
+    max-width: 600px !important;
+    top:7%;
+}
+#insert_title{
+	text-align:center ;
+	margin-top:40px;
+}
+#insert_close{
+    border: none;
+    outline: none;
+    background: transparent;
+    color: black;
+    position: absolute;
+    left: 93%;
+    top: -1%;
+    font-size: 35px;
+}
+
+#insertForm{
+	padding:10px 30px;
+}
+.insert_menudiv:first-child{
+	margin-top:15px !important;
+}
+.insert_menudiv{
+	clear:both;
+	margin: 30px 0px;
+	height:50px;
+}
+#insertForm label{
+display:inline-block;
+width:26%;
+color:black;
+line-height:50px;
+font-weight:bold;
+}
+#insertForm input{
+	width:73%;
+	float:right;
+	height: 50px;
+    border: 1px solid #C4C5C8;
+    border-radius: 10px;
+    padding: 15px;
+	
+}
+#insertForm input:focus{
+	border:2px solid #26abff;
+	outline:none;
+}
+#names_label{
+	position:absolute;
+}
+.wrap_namediv{
+	height:50px;
+}
+
+div#insert_namediv {
+    width: 54%;
+    display: inline-block;
+    margin-left:26.3%;
+}
+
+.insert_name{
+	display:inline-block;
+	background:#3abff7;
+	color:white;
+	font-weight:bold;
+	border-radius:25px;
+	font-size:14px;
+	padding:7px;
+	margin:4px 3px;
+	
+}
+.etc_name {
+    background: #C3C3C3;
+    width: 55.99px;
+    text-align: center;
+}
+.etc_show{
+	display:none;
+}
+#member_search {
+    border: 2px solid #26abff;
+    position: absolute;
+    margin-top: 2px;
+    right: 47px;
+    height: 50px;
+    border-radius: 5px;
+    color: #26abff;
+    background: white;
+    width: 100px;
+    font-weight:bold;
+}
+
+#insert_type, #insert_resource_name{
+	height:50px;
+	border:1px solid #C4C5C8;
+	border-radius:5px;
+	width:32%;
+	background:white;
+	padding:0px 15px;
+}
+#insert_type{
+}
+
+select option:disabled{
+	display: none;
+}
+
+#insert_resource_name{
+	float:right;
+	width:38%;
+}
+#insert_day{
+	width:37% !important;
+	float:none !important;
+}
+
+.wrap_daydiv{
+	margin-bottom:25px !important;
+}
+.wrap_timediv{
+	margin-top:25px !important;
+}
+
+#insert_timediv {
+    width: 73%;
+    height: 100%;
+    display: inline-block;
+    border: none;
+    float: right;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    border: 1px solid #C4C5C8;
+    border-radius: 10px;
+    scrollbar-width: thin;
+	scrollbar-color: #26abff transparent;
+}
+
+#insert_timediv::-webkit-scrollbar {
+    height:5px !important;
+}
+#insert_timediv::-webkit-scrollbar-thumb {
+    background-color: #26abff !important;
+    border-radius:10px;
+}
+#insert_timediv::-webkit-scrollbar-track {
+    background-color: transparent !important;
+}
+  
+.insert_time {
+    display: inline-block;
+    width: 80px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    background: #3abff7;
+    color: white;
+    border-radius: 5px;
+    display:none;
+}
+.can{
+	cursor:pointer;
+}
+.check{
+	color:transparent;
+	cursor:pointer;
+}
+.check img {
+	width:20px;
+	height:20px;
+	margin-top:-6px;
+	margin-left:-35px;
+}
+.disabled{
+	background:#c2c2c2
+}
+#insert_submit{
+	height:55px !important; width:100%;display:block; 
+	font-weight:bold; margin:0 auto; opacity:1;
+    border-radius:5px;height:50px; font-size:18px;
+    background-color:white; color:#26abff; border:2px solid #26abff;
+    outline:none;
+}
+    
+#insert_submit:hover{
+	background-color:#26abff;
+	border:1px solid #26abff;
+	color:white;
+}    
+/* 생성 모달 끝 */
+/* 명단 검색 */
+#msearch{
+	z-index:5000;
+}
+
+#msearch .modal-dialog {
+	top:15%;
+}
+#msearch .modal-content {
+    width: 500px;
+    height: 500px;
+}
+#msearch_subject {
+    text-align: center;
+    margin-top: 35px;
+}
+
+#msearch_input {
+    height: 45px;
+    width: 300px;
+    border:1px solid #ced4da;
+    margin: 0 auto;
+    display: block;
+    border-radius: 10px;
+    margin-bottom:20px;
+    padding:15px;
+}
+#msearch_input:focus{
+	border:2px solid #009CFF;
+	outline:none;
+}
+
+#msearch_input + span {
+    font-size: 25px;
+    position: absolute;
+    right: 110px;
+    top: 18px;
+    color: black;
+}
+
+.msearch_table_head{
+	margin-bottom:0px !important;
+}
+#msearch_table_div {
+	scrollbar-width: none;
+}
+
+#msearch_table_div h5 {
+	margin-top:25%
+}
+#msearch_table_div::-webkit-scrollbar {
+           width: 0px; /*스크롤바의 너비*/
+}
+#msearch_table_div::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background: transparent; /* 스크롤바의 색상 */
+    
+    border-radius: 10px;
+}
+
+#msearch_table_div::-webkit-scrollbar-track {
+    background-color: transparent;  /*스크롤바 뒷 배경 색상*/
+} 
+.msearch_table_head, .msearch_table_body {
+	text-align:center; color:black !important;
+} 
+			.msearch_table_head td:nth-child(1) {width:20%;border-top:none;font-weight:bold;border-bottom:1px solid #ced4da}
+			.msearch_table_head td:nth-child(2) {width:40%;border-top:none;font-weight:bold;border-bottom:1px solid #ced4da}
+			.msearch_table_head td:nth-child(3) {width:40%;border-top:none;font-weight:bold;border-bottom:1px solid #ced4da}
+			.msearch_table_body td:nth-child(1) {width:20%;height:43px;border-bottom:1px solid #ced4da}
+			.msearch_table_body td:nth-child(2) {width:40%;border-bottom:1px solid #ced4da}
+			.msearch_table_body td:nth-child(3) {width:40%;border-bottom:1px solid #ced4da}
+#mesearch_buttondiv {
+    margin-top: 28px;
+}
+#msearch .modal-body {
+    padding: 1rem 100px !important;
+}
+button#msearch_ok {
+    height: 55px;
+    background: #009CFF;
+    outline: none;
+    border: 1px solid #009CFF;
+    width: 135px;
+    border-radius:10px;
+    color:white;
+        font-size:18px;
+    font-weight:bold;
+}
+button#msearch_ok:hover {
+    background: #26abff;
+    border: 1px solid #26abff;
+}
+button#msearch_cancel {
+    height: 55px;
+    width: 135px;
+    border: 1px solid #ced4da;
+    background: white;
+    border-radius:10px;
+    float:right;
+    font-size:18px;
+    font-weight:bold;
+}
+button#msearch_cancel:hover{
+	background: #009CFF;
+    border: 1px solid #009CFF;
+    color:white;
+}
+select{
+	background:white;
+}
+/* 명단 검색 끝 */
+/* 자원 생성 */
+#resource_modal .modal-dialog{
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width:400px;
+}
+#resource_modal .modal-content{
+	padding:0px 30px;
+}
+#resource_subject{
+  margin-top: 38px;
+  text-align:center;
+  color:#26abff;
+}
+.resource_input{
+    display: block;
+  width: 100%;
+  margin: 20px 0;
+  border-radius: 7px;
+  border: 1px solid #C4C5C8;
+  outline: none;
+  padding: 1rem;
+  font-size: 1.1rem;
+}
+.resource_input:focus{
+	border:2px solid #26abff;
+	outline:none;
+}
+.resource_input:first-child{
+	margin-bottom:25px;
+}
+
+#resource_buttondiv {
+    margin-top: 28px;
+    margin-bottom:10px;
+}
+
+button#resource_ok {
+    height: 55px;
+    background: #009CFF;
+    outline: none;
+    border: 1px solid #009CFF;
+    width: 140px;
+    border-radius:10px;
+    color:white;
+        font-size:18px;
+    font-weight:bold;
+}
+button#resource_ok:hover {
+    background: #26abff;
+    border: 1px solid #26abff;
+}
+button#resource_cancel {
+    height: 55px;
+    width: 140px;
+    border: 2px solid #26abff;
+    background: white;
+    border-radius: 10px;
+    float: right;
+    font-size: 18px;
+    font-weight: bold;
+    color: #26abff;
+}
+button#resource_cancel:hover{
+	background: #009CFF;
+    border: 1px solid #009CFF;
+    color:white;
+}
+/* 자원 생성 끝 */
+#type_span {
+  width: 11.5%;
+  display: inline-block;
+  padding: 0px 0px 0px 0px;
+  float:left;
+  color:black;
+}
+#type_select{
+	width:80px;
+	height:30px;
+	border:1px solid #ced4da;
+	border-radius:5px;
+}
+.time_span{
+	display:inline-block;
+	width:8.7%;
+	float:left;
+	color:black;
+}
+.time_span:last-child{
+	width:auto !important;
+}
+.reserve_table{
+	border-collapse:collapse;
+	width:100%;
+}
+.last_before{
+	width:6.8%;
+}
+.reserve_table td {
+	width:4.35%;
+	height:70px;
+	border-top:1px solid #ced4da;
+	border-bottom:1px solid #ced4da;
+}
+.reserve_table td:first-child{
+	width:13% !important;
+	padding:0px 10px 0px 25px;
+	color:black;
+}
+.reserve_table td:nth-child(2n+1){
+	border-right:1px solid #ced4da;
+	/*border-left:none;*/
+	border-left:1px solid #ced4da;
+}
+.reserve_table td:nth-child(2n){
+	/*border-right:none !important;*/
+	border-right:1px solid #ced4da !important;
+}
+.reserve_table td:last-child{
+	border-right:1px solid #ce4da;
+}
+.reserved{
+	background-clip: content-box !important;
+	padding:13px 0px;
+	background:#3abff7;
+	color:white;
+	font-size:14px;
+}

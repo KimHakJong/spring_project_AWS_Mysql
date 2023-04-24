@@ -1,0 +1,489 @@
+.container {
+	width: 80%
+}
+
+
+body>div>table>tbody>tr:nth-child(1) {
+	text-align: center
+}
+
+body>div>table>tbody td:nth-child(1) {
+	font-weight: bold;
+	font-size: 1.2em
+}
+
+.layer-list{
+	padding-left : 0em !important;
+}
+
+
+td:nth-child(1) {
+	width: 20%
+}
+
+a {
+	color: white
+}
+
+body>div>table>tbody>tr:nth-child(5)>td:nth-child(2)>a {
+	color: black
+}
+
+body>div>table>tbody tr:last-child {
+	text-align: center;
+}
+
+.btn-primary {
+	background-color: #4f97e5
+}
+
+.modal {
+	display: none
+}
+
+#comment>table>tbody>tr>td:nth-child(2) {
+	width: 60%
+}
+
+/* 횄짯횂혖횂짭횄짧횂쨍횂째 횄짭횂징횂째횄짭횂혻횏�� 횄짧횂쨀횂혻횄짭횂혻창�궗짖*/
+textarea.form-control {
+	resize: none
+}
+
+.comment-area .comment-head .comment-count {
+	float: left;
+	margin-top: 3px;
+	margin-right: 12px;
+	font-size: 17px;
+}
+
+.comment-area .comment-head .comment-order .comment-order-list {
+	display: inline-block;
+	margin-top: 4px;
+	font-size: 13px;
+	vertical-align: top;
+}
+
+dl, ol, ul {
+	list-style: none;
+}
+
+.comment-area .comment-head .comment-order .comment-order-item:first-child {
+	margin-left: 0;
+}
+
+.comment-area .comment-head .comment-order .comment-order-item {
+	float: left;
+	margin-left: 8px;
+}
+
+body, button, li, ol, textarea, ul {
+	margin: 0;
+	padding: 0;
+}
+
+
+.comment-order-button {
+	color: #b7b7b7;
+	font-weight: 700;
+}
+
+a {
+	text-decoration: none;
+}
+
+
+
+
+button {
+	cursor: pointer;
+	border: 0;
+	background: none;
+}
+
+img {
+	vertical-align: middle;
+}
+
+fieldset, img {
+	border: 0;
+}
+
+.comment-area {
+	margin-top: -17px;
+	border-top: 1px solid #ebecef;
+}
+
+.comment-area .comment-head {
+	position: relative;
+	padding-top: 16px;
+	margin-bottom: 11px;
+}
+
+textarea.comment-write-area-text {
+	max-height: 500px;
+}
+
+.comment-area .comment-list .comment-nick-box, .comment-list-item--reply {
+	margin-bottom: 4px;
+}
+
+.comment-area .comment-list .comment-nick-area {
+	position: relative;
+	padding: 12px 23px 10px 0;
+}
+
+.comment-list-item--reply.lev1 {
+	margin-left: 46px;
+}
+
+.comment-list-item--reply.lev2 {
+	margin-left: 92px;
+}
+
+.comment-area .comment-list .comment-list-item {
+	position: relative;
+	border-top: 1px solid #f2f2f2;
+}
+
+.comment-area .comment-list .comment-nick-box .comment-nickname {
+	font-weight: 700;
+}
+
+.comment-area a {
+	color: inherit;
+}
+
+.comment-area .comment-list .comment-info-box {
+	margin-top: 7px;
+	font-size: 12px;
+	color: #979797;
+}
+
+.comment-area .comment-list .comment-tool .comment-tool-button {
+	display: block;
+	width: 16px;
+	height: 16px;
+	text-align: right;
+	cursor: pointer;
+}
+
+.comment-area .comment-list .comment-tool {
+	position: absolute;
+	top: 12px;
+	right: 0;
+}
+
+.comment-tool-button div {
+	transform: rotate(90deg);
+	color: #979797
+}
+
+.comment-area .comment-list+.comment-write {
+	margin-top: 30px;
+}
+
+.comment-write {
+	margin: 12px 0 29px;
+	padding: 16px 10px 10px 18px;
+	border: 2px solid rgba(0, 0, 0, 0.1);
+	border-radius: 6px;
+	box-sizing: border-box;
+	background: #ffffff;
+}
+
+.comment-write .comment-write-area {
+	position: relative;
+	margin-bottom: 10px;
+}
+
+.comment-write .comment-write-area-text {
+	overflow-x: hidden;
+	overflow-y: auto;
+	display: block;
+	width: 100%;
+	min-height: 17px;
+	padding-right: 1px;
+	border: 0;
+	font-size: 13px;
+	-webkit-appearance: none;
+	resize: none;
+	box-sizing: border-box;
+	background: transparent;
+	color: #000000;
+	outline: 0;
+}
+
+button, textarea {
+	font-family: Apple SD Gothic Neo, 횄짬횂짠창�궗�쑦꺜�횂혶창�슿� 횄짧횂쨀횂혻횄짬창�궗혶창�궗짖, Malgun Gothic, 횄짬횂혧창�궗쨔횄짭창�궗쨘창�슿�, dotum,
+		sans-serif;
+}
+
+textarea {
+	font-weight: 400;
+}
+
+.comment-write .register-box .button {
+	display: inline-block;
+	min-width: 46px;
+	height: 34px;
+	line-height: 36px;
+	font-size: 13px;
+	color: #b7b7b7;
+	border-radius: 6px;
+	box-sizing: border-box;
+	font-weight: 700;
+	text-align: center;
+	vertical-align: top;
+}
+
+.comment-area .comment-list .comment-tool .LayerMore {
+	left: auto;
+	right: 0;
+	margin-top: 7px;
+}
+
+.LayerMore {
+	/*   overflow-y: auto; */
+	position: absolute;
+	top: auto;
+	left: 0;
+	z-index: 1;
+	max-height: 416px;
+	padding: 10px 0 10px 10px;
+	border: 1px solid rgba(0, 0, 0, .06);
+	border-radius: 6px;
+	box-shadow: 0 1px 12px 0 rgb(0 0 0/ 6%);
+	background-color: #fff;
+	box-sizing: border-box;
+	color: #000;
+	width: 100px;
+	/* height:36px; */
+}
+
+.LayerMore a {
+	font-size: small;
+	text-decoration: none;
+}
+
+.LayerMore {
+	display: none;
+}
+
+.comment-tool-button:focus, .comment-tool-button:visited {
+	outline: none;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+.btn-register, .btn-cancel, .reply {
+	cursor: pointer;
+	float: right;
+}
+
+.red {
+	color: red;
+}
+
+.gray {
+	color: gray;
+}
+
+.comment-list-item .comment-nick-area img {
+	border-radius: 50%;
+	border: 1px solid #ccc;
+	float: left;
+	margin-right: 20px;
+}
+
+.comment-write-area-text {
+	overflow: hidden;
+	overflow-wrap: break-word;
+	height: 17px;
+}
+
+.comment-write-area-count {
+	font-size: small;
+	color: #b7b7b7;
+	float: right
+}
+
+.comment-write-area-name {
+	font-size: small;
+}
+
+.register-box {
+	height: 20px;
+}
+
+.comment-write .register-box .btn-cancel {
+	display: none;
+}
+
+.show{
+	display:block;
+}
+
+.hide{
+	display:none;
+}
+
+
+#memberfile{
+width:40px;
+height:40px;
+border-radius:50%;	
+float : left;
+margin-right:20px;
+}
+
+
+#board_name{
+padding-top:4px;	
+font-weight:300;
+font-size:20px;	
+margin-right:60px;
+}
+
+
+#board_date{
+float:right;
+font-size:13px;
+font-weight: 300;	
+}
+
+
+#File{
+float:left;	
+}
+
+#button{
+float:right;	
+}
+
+/* 챙짖�뮨р�™�왗�큄�씳ヂ꿎�왗�힋쩌 */
+
+		.fas,.far,.fa{
+			font-family: "fontawesome";
+		}
+		.contain{
+		height:10px !important;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			float: right;
+			padding-top:90px;
+			padding-bottom:20px;
+		}
+		.contain button{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 6px 14px;
+			color: #fff !important;
+			cursor: pointer;
+			margin: 0  !important;
+			border-radius: 5px;
+			font-size: 17px;
+			background:#009CFF !important;
+			border : 1px solid #009CFF !important;
+		}
+		.contain button:hover{
+			background: #999494;
+		}
+		button#like.heart,button#dislike.brokeheart{
+			background: #fff !important;
+			color: #0d1317 !important;
+		}
+		button#like.heart .ti-thumb-up{
+			animation: upThumb 0.6s linear;
+		}
+		@keyframes upThumb {
+			20%{
+				transform: rotate(8deg);
+			}
+			50%{
+				transform: scale(1.2) rotate(-24deg);
+			}
+			80%{
+				transform: rotate(16deg);
+			}
+		}
+	
+		.heartAnim{
+			position: relative;
+		}
+		.heartAnim span{
+			position: absolute;
+			left: 30px;
+			bottom: -5px;
+			opacity: 0;
+		}
+		.heartAnim.spreadHeart span{
+			color: red;
+			transition: transform 0.5s linear;
+			animation: heartOpa 0.5s linear;
+		}
+		@keyframes heartOpa{
+			0%{
+				opacity: 0;
+			}
+			50%{
+				opacity: 0.5;
+			}
+			80%{
+				opacity: 0.9;
+			}
+			100%{
+				opacity: 0;
+			}
+		}
+		.heartAnim.spreadHeart span:nth-child(1){
+			transform: translate(-3px,-16px);
+			font-size: 14px;
+		}
+		.heartAnim.spreadHeart span:nth-child(2){
+			transform: translate(1px,-31px);
+			font-size: 14px;
+		}
+		.heartAnim.spreadHeart span:nth-child(3){
+			transform: translate(-11px,-30px);
+			font-size: 12px;
+		}
+		.heartAnim.spreadHeart span:nth-child(4){
+			transform: translate(-5px,-46px);
+			font-size: 14px;
+		}
+		.heartAnim.spreadHeart span:nth-child(5){
+			transform: translate(-22px,-47px);
+			font-size: 16px;
+		}
+		
+		
+	  .container-fluid.pt-4.px-4{
+	  margin-bottom : 40px;
+	  height : 100%px;
+	  width : 80%;	
+	      }
+
+	  .comment-area{
+	   padding-bottom: 20px;
+	   }
+	   
+	   thead{
+		 background-color:#4da7ed;
+		 color: #fff 
+	   }
+	   
+	   .container-fluid.pt-4.px-4{
+		   margin-top:30px;
+	   }
+		
+		#imgsub{
+			width:30px;
+			vertical-align:middle;
+		}
+
+
