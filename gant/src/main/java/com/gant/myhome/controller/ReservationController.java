@@ -202,6 +202,13 @@ public class ReservationController {
 		map.put("resource_name", resource_name);
 		map.put("day", day);
 		List<ReservationCheck> list = reservationcheckservice.getTimeAndMaxperson(map);
+		if(list.size()==0) { //예약된 시간이 없는 경우 최대인원수도 안담긴다.
+			ReservationCheck rc = new ReservationCheck();
+			int max_person = reservationitemservice.getMaxPerson(resource_name);
+			rc.setMax_person(max_person);
+			logger.info("뭐가?:"+rc.getMax_person());
+			list.add(rc);
+		}
 		return list;
 	}
 	

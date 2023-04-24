@@ -60,7 +60,7 @@
   </select>
   
   <select id="getMembersList" resultType="members">
-       select * 
+       select b.* 
 	   from (select a.*, @rownum:=@rownum+1 AS rnum 
 			 from (select *
 			       from members 
@@ -68,7 +68,7 @@
 					 	<include refid="search_"/>
 			       order by name) a, (SELECT @rownum:=0) r                                 
 			 where @rownum &lt;= #{end} 
-			) 
+			) b
 	   where rnum between #{start} and #{end} 
   </select>
   

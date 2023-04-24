@@ -5,7 +5,7 @@ CREATE TABLE memo (
   content VARCHAR(3000),
   background VARCHAR(100),
   color VARCHAR(20),
-  update_date VARCHAR(14) DEFAULT DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+  update_date VARCHAR(14) DEFAULT (DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'))
 );
 
 select * from memo;

@@ -7,7 +7,7 @@ public class ReservationCheck {
 	private String day;
 	private int reserved_time;
 	private String name; //해당시간의 예약자 성명을 view에 같이 넘기기 위함
-	private String max_person; //해당예약번호의 최대 수용인원을 넘기기 위함
+	private int max_person; //해당예약번호의 최대 수용인원을 넘기기 위함
 	
 	public String getId() {
 		return id;
@@ -21,10 +21,10 @@ public class ReservationCheck {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getMax_person() {
+	public int getMax_person() {
 		return max_person;
 	}
-	public void setMax_person(String max_person) {
+	public void setMax_person(int max_person) {
 		this.max_person = max_person;
 	}
 	public int getNum() {

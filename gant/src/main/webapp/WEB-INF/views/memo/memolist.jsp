@@ -424,7 +424,9 @@ $(document).ready(function(){
 	
 		$('.btnClose').click(function(){ //메모장 종료
 			let length = $('.memo').css('background-image').length;
-			if(storedSubject!=$('.memo_subject').val() || storedText!=$('.txtMemo').val() || storedBack!=$('.memo').css('background-image').substring(53,length-2) || storedColor!=$('.txtMemo').css('color')){
+			var s_back = $('.memo').css('background-image').split("/");
+			var back = s_back[s_back.length-1].slice(0,-2);
+			if(storedSubject!=$('.memo_subject').val() || storedText!=$('.txtMemo').val() || storedBack!=back || storedColor!=$('.txtMemo').css('color')){
 				var close = confirm("데이터 변경 후 저장되지 않았습니다.\n정말 종료하시겠습니까?");
 				
 				if(close) { //확인
@@ -437,7 +439,9 @@ $(document).ready(function(){
 		
 		$(".backtolist > img").click(function(){
 			let length = $('.memo').css('background-image').length;
-			if(storedSubject!=$('.memo_subject').val() || storedText!=$('.txtMemo').val() || storedBack!=$('.memo').css('background-image').substring(53,length-2) || storedColor!=$('.txtMemo').css('color')){
+			var s_back = $('.memo').css('background-image').split("/");
+			var back = s_back[s_back.length-1].slice(0,-2);
+			if(storedSubject!=$('.memo_subject').val() || storedText!=$('.txtMemo').val() || storedBack!=back || storedColor!=$('.txtMemo').css('color')){
 				var close = confirm("아직 저장되지 않았습니다. \n 정말 뒤로 가시겠습니까?");
 				
 				if(close) { //확인
@@ -458,13 +462,14 @@ $(document).ready(function(){
 		});
 		
 		$('.memo_store').click(function(){ //메모장 저장
-			
 			let num = $("#memo_num").val();
 			let id = $(".side_userid").text();
 			let length = $('.memo').css('background-image').length;
 			console.log($('.memo').css('background-image'));
-			console.log($('.memo').css('background-image').substring(53,length-2));
-			let background = $('.memo').css('background-image').substring(53,length-2); //배경색이미지값만 추출
+			var s_back = $('.memo').css('background-image').split("/");
+			var back = s_back[s_back.length-1].slice(0,-2);
+			
+			let background = back; //배경색이미지값만 추출
 			let	color = $('.txtMemo').css('color');
 			let subject = $('.memo_subject').val();
 			let content = $('.txtMemo').val();
@@ -534,7 +539,7 @@ $(document).ready(function(){
 </div>
 
 <!-- 메모작성 -->
-<div class="memo" style="background-image: url('${pageContext.request.contextPath}/resources/image/memo/memo-yellow.png')">
+<div class="memo" style="background-image:url('${pageContext.request.contextPath}/resources/image/memo/memo-yellow.png')">
 	<div class="memo_top">
 	<div class="btnChange"><img src='${pageContext.request.contextPath}/image/memo/change.png'>
 		<span class='back_colors'>

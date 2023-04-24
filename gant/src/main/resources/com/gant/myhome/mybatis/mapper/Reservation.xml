@@ -43,7 +43,7 @@
 	</update>
 	
 	<select id="selectById" resultType="reservation">
-		select *
+		select c.*
 		from ( select (@rownum := @rownum + 1) AS rnum, b.*
 			 from ( select * 
 			        from Reservation 
@@ -54,7 +54,7 @@
 			   		order by day
 			 	  )b, (select @rownum := 0) r
 			 where @rownum &lt;= #{end} 
-			 ) 
+			 ) c
 		where rnum between #{start} and #{end}
 	</select>	
 	

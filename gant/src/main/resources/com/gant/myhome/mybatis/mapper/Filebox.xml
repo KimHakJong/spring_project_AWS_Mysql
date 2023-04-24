@@ -44,6 +44,7 @@
 													and folder_path like CONCAT(#{folder_path}, '%')
 													)
 						) 	<!-- 삭제할 폴더 ~ 하위경로 폴더의 번호에 포함되는 파일들을 삭제 -->
+						
 	</delete>
 	
 </mapper>

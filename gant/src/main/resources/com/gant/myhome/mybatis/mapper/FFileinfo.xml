@@ -52,4 +52,5 @@
 							 		  and folder_path like CONCAT(#{folder_to_move}, '%')
 							 		)
 	</update>	
+	
 </mapper>
