@@ -85,12 +85,17 @@
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ojdbc7-12.1.0.2.jar</systemPath>
         </dependency>
        	         -->
-		
+		<!-- 
 		<dependency>
 	    <groupId>com.oracle.database.jdbc</groupId>
 	    <artifactId>ojdbc8</artifactId>
 	</dependency> 
-	
+		 -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <scope>runtime</scope>
+  </dependency> 	
 
 <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
 		<dependency>

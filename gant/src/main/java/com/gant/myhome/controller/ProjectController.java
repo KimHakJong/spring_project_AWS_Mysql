@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,11 +33,13 @@ public class ProjectController {
 	
 	private ProjectService projectservice;
 	private MemberService memberservice;
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public ProjectController(ProjectService projectservice, MemberService memberservice) {
+	public ProjectController(ProjectService projectservice, MemberService memberservice, PasswordEncoder passwordEncoder) {
 		this.projectservice = projectservice;
 		this.memberservice = memberservice;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	@RequestMapping(value="/view")
@@ -44,15 +47,11 @@ public class ProjectController {
 							@RequestParam(value="p_name", defaultValue="", required=false) String p_name) {
 			String id = principal.getName();
 			Members m = memberservice.getMemberInfo(id);
-			//메인 들어갔을 때 사이드에 프로필사진, 이름 표시
+			List<Project> list = projectservice.getProjectList(id, p_name, m.getAdmin(), m.getPosition());
 			session.setAttribute("profileimg", m.getProfileimg());
 			session.setAttribute("name", m.getName());
-			
-			 //검색어, 계정의 관리자유무,직급에 따라 표시하는 프로젝트를 다르게하기 위함
-			List<Project> list = projectservice.getProjectList(id, p_name, m.getAdmin(), m.getPosition());
 			mv.addObject("list",list);
-			mv.addObject("check_id",id); //view에서 해당 프로젝트 생성자 ID인지 비교 ( O : 해당 프로젝트 수정삭제권한있음)
-			mv.addObject("admin",m.getAdmin()); //view에서 관리자인지 확인( O : 모든 프로젝트 수정삭제권한있음)
+			mv.addObject("check_id",id);
 			mv.setViewName("pmain/view");
 			return mv;
 	}

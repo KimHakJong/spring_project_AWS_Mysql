@@ -212,7 +212,7 @@ div#move_content {
     margin-top: 2%;
 }
 #file_menu form{
-	width:166px;
+	width:170px;
 	float:right;
 }
 
@@ -703,7 +703,7 @@ $(document).ready(function(){
 				});
 				if(can==1){
 				let file_num = $(this).parent().prev().data('file_num');
-				edit_name_ajax(file_num,'파일',name,'');
+				edit_name_ajax(file_num,'파일',name);
 				}else if(can==0){
 					alert("현재 경로에 동일한 파일명이 있습니다.");
 				}
@@ -716,9 +716,7 @@ $(document).ready(function(){
 				});
 				if(can==1){
 				let folder_num = $(this).parent().prev().data('folder_num');
-				let old_path = $(this).parent().prev().data('url');
-				
-				edit_name_ajax(folder_num,'폴더',name,old_path);
+				edit_name_ajax(folder_num,'폴더',name);
 				}else if(can==0){
 					alert("현재 경로에 동일한 폴더명이 있습니다.");
 				}
@@ -726,12 +724,12 @@ $(document).ready(function(){
 			
 			loadAll();
 		}
-			function edit_name_ajax(what_num,type,name,old_path){
+			function edit_name_ajax(what_num,type,name){
 				
 				$.ajax({
 					url : "editName",
 					type : "post",
-					data : { "num" : what_num , "type" : type, "name" : name , "old_path" : old_path },
+					data : { "num" : what_num , "type" : type, "name" : name },
 					dataType : "json",
 					async : false,
 					beforeSend : function(xhr)
@@ -810,7 +808,6 @@ $(document).ready(function(){
 	
 	folder_to_move = "";
 	file_to_move = "";
-	file_to_move_save_path = "";
 	//이동 클릭 (폴더의 맨처음 경로의 폴더들을 가져온다.)
 	$("body").on('click',"#menudiv li:eq(2) a",function(){
 		let what_type = $(this).parent().parent().parent().prev().find('.file_show');//폴더인지 파일인지
@@ -818,13 +815,11 @@ $(document).ready(function(){
 			folder_to_move = what_type.data('url'); //선택한 폴더경로
 		}else if(what_type.attr('class')=='file_show thisfile') { //파일
 			file_to_move = what_type.data('file_num');//선택한 파일번호
-			file_to_move_save_path = what_type.data('save_path'); //선택한 파일경로
 		}
 		$("#move").css('display','block');	
 		let folder_path = $("#path").children().first().data('url');
 		$("#move_content").empty();
 		loadFolderForMove(folder_path, p_no, $("#move_content"),'first');
-		
 	});//이동클릭 끝
 	
 		//이동안에서 폴더클릭(하위 폴더 보여줌)
@@ -848,12 +843,12 @@ $(document).ready(function(){
 	$("#move_button button").eq(0).click(function(){
 		if($(".move_select").attr('class')=='move_select'){ //체크된 게 있으면
 			let folder_path = $(".move_select").parent().parent().data('folder_path');
-			console.log("어디로갈까?:"+folder_path+"뭐가이동할까?:"+folder_to_move);
+			
 			//파일을 이동하려는 경우 : folder_to_move값은 '' , 폴더를 이동하려는 경우 : file_to_move값은 ''
 			$.ajax({
 				url : "updateForMove",
 				type : "post",
-				data : { "p_no": p_no, "folder_path" : folder_path, "folder_to_move" : folder_to_move , "file_to_move" : file_to_move , "file_to_move_save_path" : file_to_move_save_path },
+				data : { "p_no": p_no, "folder_path" : folder_path, "folder_to_move" : folder_to_move , "file_to_move" : file_to_move },
 				dataType : "json",
 				async : false,
 				beforeSend : function(xhr)
@@ -866,9 +861,6 @@ $(document).ready(function(){
 	    			}else if(rdata==2){
 	    				alert("해당 폴더가 이동되었습니다.");
 	    			}
-	    			folder_to_move = "";
-	    			file_to_move = "";
-	    			file_to_move_save_path = "";
 	    		},
 	    		error : function(xhr,status,error) {
 	    			console.log("파일/폴더이동중 오류발생:"+error);
@@ -891,7 +883,6 @@ $(document).ready(function(){
 		$(".move_select").removeClass("move_select");
 		folder_to_move = ''; //이동시킬 폴더경로와 파일번호를 초기화
 		file_to_move = '';
-		file_to_move_save_path = '';
 	});
 	
 	//삭제 클릭 ( 폴더삭제는 관리자와 프로젝트생성자만 가능 )
@@ -900,9 +891,7 @@ $(document).ready(function(){
 		let selector = $(this).parent().parent().parent().prev().find('.file_show');
 		if(selector.attr('class')=='file_show thisfile') {//파일div가 존재하면
 			let file_num = selector.data('file_num');
-			let del_file_path = selector.data('save_path');
-			
-			delete_ajax(id,file_num,'파일',p_no,del_file_path);
+			delete_ajax(id,file_num,'파일',p_no,'');
 			
 		}else if (selector.attr('class')=='file_show thisfolder') { //폴더div가 존재하면
 			let folder_num = selector.data('folder_num');
@@ -911,12 +900,12 @@ $(document).ready(function(){
 		}
 		
 		loadAll();
-		function delete_ajax(id, num, type, p_no, file_or_folder_path){
+		function delete_ajax(id, num, type, p_no, folder_path){
 			
 		$.ajax({
 			url : "delete",
 			type : "post",
-			data : { "id" : id, "num" : num, "type" : type, "p_no": p_no, "file_or_folder_path" : file_or_folder_path},
+			data : { "id" : id, "num" : num, "type" : type, "p_no": p_no, "folder_path" : folder_path},
 			dataType : "json",
 			async : false,
 			beforeSend : function(xhr)

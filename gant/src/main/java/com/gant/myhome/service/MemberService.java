@@ -12,7 +12,7 @@ public interface MemberService {
 
 	public int passUpdate(Members m);
 	
-	public String findIdCheck(Members m);
+	public String findIdCheck(String name, String email);
 	
 	public String findPassCheck(Members members);
 

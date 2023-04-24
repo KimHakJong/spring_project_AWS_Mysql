@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.gant.myhome.domain.Members;
@@ -13,11 +14,13 @@ import com.gant.myhome.mybatis.mapper.MembersMapper;
 public class MemberServicelmpl implements MemberService {
 
 	private MembersMapper dao;
+	private PasswordEncoder passwordEncoder;
 	
 	
 	@Autowired
-	public MemberServicelmpl(MembersMapper dao) {
+	public MemberServicelmpl(MembersMapper dao, PasswordEncoder passwordEncoder) {
 		this.dao = dao;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	@Override
@@ -33,13 +36,13 @@ public class MemberServicelmpl implements MemberService {
 	}
 
 	@Override
-	public String findIdCheck(Members m) {
-		Members member = dao.findIdCheck(m);
-		if(member==null) { // 이름에 대한 정보가 없음
+	public String findIdCheck(String name, String email) {
+		Members m = dao.findIdCheck(name);
+		if(m==null) { // 이름에 대한 정보가 없음
 			return "";
 		}else {
-			if (member.getEmail().equals(m.getEmail())) {
-				return member.getId();
+			if (m.getEmail().equals(email)) {
+				return m.getId();
 			}else {
 				return "noemail";
 			}
@@ -86,7 +89,7 @@ public class MemberServicelmpl implements MemberService {
 		
 		if(!searchfield.equals("")) {
 			map.put("searchfield", searchfield);
-			map.put("searchword",searchword);
+			map.put("searchword", searchword);
 		}
 		
 		map.put("start", startrow);

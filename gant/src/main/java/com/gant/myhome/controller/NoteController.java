@@ -180,7 +180,7 @@ public class NoteController {
 		String id = principal.getName();
 		int membercount = requestservice.getMembersCount(id);
 		List<Members> memberlist = requestservice.getMembersList(id);
-		logger.info("글쓴이 : " +writer );
+			
 		mv.setViewName("note/write");	
 		mv.addObject("memberlist",memberlist);
 		mv.addObject("membercount",membercount);			

@@ -1,14 +1,15 @@
-create table project (
-p_no NUMBER primary key,
-p_hostid VARCHAR2(15) references members(id) on delete cascade,
-p_name VARCHAR2(50),
-p_sdate VARCHAR2(10),
-p_edate VARCHAR2(10),
-p_mids VARCHAR2(100),
-p_mnames VARCHAR2(100),
-p_content VARCHAR2(1000),
-p_situation VARCHAR2(30),
-p_percent NUMBER(3)
+CREATE TABLE project (
+  p_no INT primary key,
+  p_hostid VARCHAR(15) references members(id) on delete cascade,
+  p_name VARCHAR(50),
+  p_sdate VARCHAR(10),
+  p_edate VARCHAR(10),
+  p_mids VARCHAR(100),
+  p_mnames VARCHAR(100),
+  p_content VARCHAR(1000),
+  p_situation VARCHAR(30),
+  p_percent INT(3)
 );
+
 select * from project;
 drop table project;

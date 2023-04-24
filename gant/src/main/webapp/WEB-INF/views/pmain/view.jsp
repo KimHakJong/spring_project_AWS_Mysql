@@ -42,7 +42,7 @@
 					</a>
 					<input type="hidden" class="p_mnames" value="${p.p_mnames}">
 				</div>
-				<c:if test="${p.p_hostid==check_id || admin=='true'}">  <!--  -->
+				<c:if test="${p.p_hostid==check_id || check_id=='admin'}"> 
 				<a class="goupdate" data-toggle="modal" href="#updatemodal" data-backdrop="static"><img class="project_editimg" src="../image/pmain/pencil.png"></a>
 				<img class="project_deleteimg" src="../image/pmain/clear.png">
 				</c:if>
@@ -66,6 +66,7 @@
 		  <c:if test="${empty list}">
 			<h5 id="noproject">조회된 프로젝트가 없습니다.</h5>
 		  </c:if>
+			
 		</div><!-- projects -->
 			<img id="project_openmenu" src="../image/pmain/projectmenu3.png">
 			<div id="project_openedmenu">
@@ -420,11 +421,11 @@ if('${create}'==1){
 		
 	});
 	
-	//처음엔 생성,수정모달에 id,name들 가져옴 -> 명단검색클릭: 가져온 값 체크되도록 -> 취소:값초기화, 확인:check_id에 저장된 아이디값을 모달에 넘김
-	//check_id = 명단검색눌렀을 때 id값들 받아옴 / 체크O,체크X 시 해당value를 check_id에 추가,제거 / 취소눌렀을 때 값초기화 / input할 때마다 check_id에 있는 값 체크되도록 , 확인눌렀을 때 check_id에 있는 각각 value와 비교해서 값넘김
+	//처음엔 생성,수정모달에 id,name들 가져옴 -> 명단검색클릭: 가져온 값 체크되도록 -> 취소:값초기화, 확인:check_id에 저장된 아이디값넘김
+	//check_id = 명단검색눌렀을 때 id값들 받아옴 / 체크O,체크X 시 해당value를 check_id에 추가,제거 / 취소눌렀을 때 값초기화 / 인풋할 때마다 check_id에 있는 값 체크되도록 , 확인눌렀을 때 check_id에 있는 각각 value와 비교해서 값넘김
 	$("body").on('change','input[type="checkbox"]',function(){
 		console.log(check_id);
-		let change_id = $(this).val(); //변화감지된 아이디
+		let change_id = $(this).val(); //체크된 아이디
 		if($(this).is(":checked")){//새로 체크되었을 때
 			if(!check_id.includes(change_id+",")){ //기존 체크 id에 방금 체크한 아이디가 없는 경우
 				if(check_id.substr(-1) == "," || check_id.length==0){ //맨마지막이 ,인 경우

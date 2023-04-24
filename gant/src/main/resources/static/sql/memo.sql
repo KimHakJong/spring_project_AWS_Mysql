@@ -1,12 +1,12 @@
 CREATE TABLE memo (
-  num NUMBER PRIMARY KEY,
-  id VARCHAR2(15) REFERENCES members(id) ON DELETE CASCADE,
-  subject VARCHAR2(30),
-  content VARCHAR2(3000),
-  background VARCHAR2(100),
-  color VARCHAR2(20),
-  update_date VARCHAR2(14) DEFAULT TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS'),
+  num INT PRIMARY KEY,
+  id VARCHAR(15) REFERENCES members(id) ON DELETE CASCADE,
+  subject VARCHAR(30),
+  content VARCHAR(3000),
+  background VARCHAR(100),
+  color VARCHAR(20),
+  update_date VARCHAR(14) DEFAULT DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
 );
+
 select * from memo;
 drop table memo;
-

@@ -25,7 +25,7 @@ public interface MembersMapper {
 
 	public List<String> selectByDname(String department);
 
-	public Members findIdCheck(Members m);
+	public Members findIdCheck(String name);
 
 	public Members findPassCheck(String id);
 

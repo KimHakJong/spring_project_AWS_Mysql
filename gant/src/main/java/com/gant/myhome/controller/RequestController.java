@@ -95,24 +95,6 @@ public class RequestController {
 		}
 		
 		
-		//검색어가 있다면 검색어에 맞춘 게시물 수를 구해야한다.
-		if(!search_name.equals("")) {
-			
-		//검색어에 해당하는 members 테이블의 id을 List<String> 형태로 받아온다.
-		List<String> id_list =  requestservice.getSearchId(search_name);
-		
-		int count = 0;//검색어에 해당하는 게시물수 
-		
-		for(String ids : id_list) {
-			count += requestservice.getSearchListCount(ids);				
-		}
-		
-		listcount = count;
-			
-		logger.info("검색어가 있을때 listcount = "+ listcount);
-		}
-		
-		
 		//  한 화면에 출력할 로우 갯수
 		int limit = 10; //  한 화면에 출력할 로우 갯수
 		

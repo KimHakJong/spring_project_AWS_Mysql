@@ -136,12 +136,8 @@
 	 		 		$(this).css('border-radius','30px 0px 0px 30px');
 	 		 		$(this).css('padding','13px 0px 13px 4px');
 	 		 		$(this).prepend($(this).find('.reserved_name').val());
-	 		 	}else{
-	 		 		$(this).css('border-radius','0px');
-	 		 		$(this).css('padding','13px 0px');
 	 		 	}
 	 		 });			   
-	 		 
 		   function loadTime_ajax(resource_name, day, selector){
 			  	  $.ajax({
 			   	  	 url: "loadTime_ajax",
@@ -567,12 +563,10 @@
 	    			xhr.setRequestHeader(header, token);			
 	    		 },
 	    		success : function(rdata){
-	    			
+	    			//선택한 자원의 최대 참여명단 수를 제한
+	    			$(".max_person").val(rdata.max_person);
 					//예약된 시간 비활성화
-	    			$(rdata).each(function(){
-	    				//선택한 자원의 최대 참여명단 수를 제한
-		    			$(".max_person").val(this.max_person);
-		    			
+	    			$(rdata.list).each(function(){
 	    				if(goinsert==true){
 		    				$("#insert_timediv input[value='"+this.reserved_time + "']").prev().attr('class', 'insert_time disabled');
 	    				}else if(goupdate==true){

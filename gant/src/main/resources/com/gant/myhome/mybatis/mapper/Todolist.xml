@@ -29,19 +29,13 @@
 	
 
 	<select id="getTodolist" resultType="Todolist">
-	select * from (
-  select t.*, ROW_NUMBER() over (order by state DESC) as rnum
-  from todolist t
-  where p_no = #{p_no} and board_id = #{id}
-  order by state desc) where rnum between #{start} and #{end}
+	select c.* from (select rownum rnum2, b.* from (select board_num, p_no, board_id, board_r_id, board_subject, board_content, deadline, state, rownum rnum from todolist order by state desc) b) c
+	where c.rnum2 &gt;= #{start} and c.rnum2 &lt;= #{end} and c.p_no = #{p_no} and c.board_id = #{id} 
 	</select>
 	
 	<select id="getSearchTodolist" resultType="Todolist">
-	select * from (
-  select t.*, ROW_NUMBER() over (order by state DESC) as rnum
-  from todolist t
-  where p_no = #{p_no} and board_id = #{id}
-  order by state desc) where rnum between #{start} and #{end} and board_subject like '%'||#{search}||'%'
+	select c.* from (select rownum rnum2, b.* from (select board_num, p_no, board_id, board_r_id, board_subject, board_content, deadline, state, rownum rnum from todolist order by state desc) b) c
+	where c.rnum2 &gt;= #{start} and c.rnum2 &lt;= #{end} and c.p_no = #{p_no} and c.board_id = #{id} and c.board_subject like '%'||#{search}||'%'
 	</select>
 	
 	<select id="getTodolist2" resultType="Todolist">
@@ -49,31 +43,13 @@
 	</select>
 	
 	<select id="getTodolist3" resultType="Todolist">
-	select c.*
-from (
-  select rownum rnum2, b.*
-  from (
-    select board_num, p_no, board_id, board_r_id, board_subject, board_content, deadline, state, rownum rnum
-    from todolist
-    where p_no = #{p_no} and board_num = #{board_num}
-    order by state desc
-  ) b
-) c
-where c.rnum2 between #{start} and #{end}
+	select c.* from (select rownum rnum2, b.* from (select board_num, p_no, board_id, board_r_id, board_subject, board_content, deadline, state, rownum rnum from todolist order by state desc) b) c
+	 where c.rnum2 &gt;= #{start} and c.rnum2 &lt;= #{end} and c.p_no = #{p_no} and c.board_num = #{board_num} 
 	</select>
 	
 	<select id="getSearchTodolist3" resultType="Todolist">
-	select c.*
-from (
-  select rownum rnum2, b.*
-  from (
-    select board_num, p_no, board_id, board_r_id, board_subject, board_content, deadline, state, rownum rnum
-    from todolist
-    where p_no = #{p_no} and board_num = #{board_num}
-    order by state desc
-  ) b
-) c
-where c.rnum2 between #{start} and #{end} and c.board_subject like '%'||#{search}||'%'
+	select c.* from (select rownum rnum2, b.* from (select board_num, p_no, board_id, board_r_id, board_subject, board_content, deadline, state, rownum rnum from todolist order by state desc) b) c
+	 where c.rnum2 &gt;= #{start} and c.rnum2 &lt;= #{end} and c.p_no = #{p_no} and c.board_num = #{board_num} and c.board_subject like '%'||#{search}||'%'
 	</select>
 	
 	

@@ -111,14 +111,6 @@
 
 <script>
 $(function(){
-	
-	  $('#delete').click(function() {
-			  if(confirm("휴지통으로 이동합니다. 일주일 뒤 자동으로 삭제됩니다.")){
-				  $('#basketfrom').submit();
-			  }	  
-		  });
-	
-	
     $('#write').click(function() { 
     	location.href = 'write';
     })
@@ -163,6 +155,13 @@ $(function(){
 	    }
 	  });
 	  
+	  $('#delete').click(function() {
+		  
+		  if(confirm("휴지통으로 이동합니다. 일주일 뒤 자동으로 삭제됩니다.")){
+			  $('#basketfrom').submit();
+		  }
+	  
+	  });
 	  
 });
 
@@ -216,7 +215,7 @@ $(function(){
     <form action="getBasket" method="get" id="basketfrom">
     <input type="hidden" name="type" value="send">
     <input type="hidden" value="get"> <!-- 받은 메세지함을 표시하기위한 값 -->
-    <button type="button" class="btn btn-outline-danger float-left" id="delete">삭제</button>
+    <button type="submit" class="btn btn-outline-danger float-left" id="delete">삭제</button>
         <table class="table custom-table">
           <thead>
             <tr>

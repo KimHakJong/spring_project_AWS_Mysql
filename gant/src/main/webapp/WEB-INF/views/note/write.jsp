@@ -18,26 +18,6 @@
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script>
       $(document).ready(function () {
-    	  
-    	//답장하기의 경우
-     	 let subject = '${subject}';
-     	 let content = '${content}';
-     	 let writer = '${writer}';
-     	 
-     	 if(subject != ''){
-     		 $('#subject').val('RE: '+subject);
-     	 }
-     	 
-     	 if(content != ''){
-     		 $('#txtContent').text('-----Original Message-----<br>'+content);
-     	 }
-     	 console.log(writer);
-     	 
-     	 if(writer != ''){
-     		 $("input[type='checkbox'][value='"+writer+"']").prop("checked", true);
-     		selectWorkers();
-     	 }  
-    	  
     	    
            //사진 선택을 취소하고싶을때 나타나는 버튼
            $('#deletefile').hide()
@@ -122,14 +102,16 @@
         	});
             
          
-            $('#modalSubmit').click(function(){              	
+            $('#modalSubmit').click(function(){  
+            	
         		$.ajax({
         			url : "../request/searchMemberList",
         			type : "get",
         			data : { "name" : ''},
         			dataType : "json",
         			async: false,
-            		success : function(rdata){     				
+            		success : function(rdata){
+      				
         				let output ='';
         				if(rdata!=null){
         					$(rdata).each(function(){
@@ -181,7 +163,25 @@
 		    }
          
     	 
-    	  	 
+    	 //답장하기의 경우
+    	 let subject = '${subject}';
+    	 let content = '${content}';
+    	 let writer = '${writer}';
+    	 
+    	 if(subject != ''){
+    		 $('#subject').val('RE: '+subject);
+    	 }
+    	 
+    	 if(content != ''){
+    		 $('#txtContent').text('-----Original Message-----<br>'+content);
+    	 }
+    	 console.log(writer);
+    	 
+    	 if(writer != ''){
+    		 $("input[type='checkbox'][value='"+writer+"']").prop("checked", true);
+    		 $('#modalSubmit').click();
+    	 }
+    	 
       
     });
       

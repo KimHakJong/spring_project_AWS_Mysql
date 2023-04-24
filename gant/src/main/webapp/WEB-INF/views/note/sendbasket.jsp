@@ -229,7 +229,7 @@ $(function(){
     <form action="delete" method="get" id="basketfrom">
     <input type="hidden" name="type" value="send">
     <input type="hidden" value="get"> <!-- 받은 메세지함을 표시하기위한 값 -->
-    <button type="button" class="btn btn-outline-danger float-left" id="delete">영구삭제</button>
+    <button type="submit" class="btn btn-outline-danger float-left" id="delete">영구삭제</button>
         <table class="table custom-table">
           <thead>
             <tr>

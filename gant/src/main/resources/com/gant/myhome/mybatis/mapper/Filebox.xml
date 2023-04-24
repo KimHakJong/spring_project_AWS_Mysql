@@ -6,7 +6,7 @@
 
 	<insert id="insert">
 		<selectKey resultType="int" order="BEFORE" keyProperty="file_num">
-			select nvl(max(file_num),0)+1 from filebox
+			select COALESCE(max(file_num),0)+1 from filebox
 		</selectKey>
 		insert into filebox 
 		(p_no, file_num, id)
@@ -41,7 +41,8 @@
 													(select folder_num 
 													from f_folder 
 													where p_no = #{p_no}
-													and folder_path like #{folder_path}||'%')
+													and folder_path like CONCAT(#{folder_path}, '%')
+													)
 						) 	<!-- 삭제할 폴더 ~ 하위경로 폴더의 번호에 포함되는 파일들을 삭제 -->
 	</delete>
 	

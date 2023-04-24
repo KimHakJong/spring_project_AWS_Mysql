@@ -72,35 +72,6 @@ width: 20px;
 vertical-align: middle;
 }
 
-
-.pagination {
-  display: inline-block;
-}
-
-.pagination a {
-  color: black;
-  float: left;
-  padding: 5px 10px;
-  text-decoration: none;
-}
-.pagination a.active {
-  background-color: #03a9f4db;
-  color: white;
-  border-radius: 20px;   
-}
-
-.pagination a:hover:not(.active) {
-  background-color: #ddd;
-  border-radius: 20px;
-}
-.pagination{
-     justify-content : center; 
-     padding-top:15px;
-        display: flex;
-    padding-left: 0;
-    list-style: none;
-}
-
 </style>
 		        
 <%-- 게시글이 있는경우 --%>
@@ -222,63 +193,102 @@ vertical-align: middle;
 </div> 
  <%--테이블 끝 --%>
 
-<%-- 페이징처리 --%>
-       
-       <div class="pagination">
-		         <%-- 1페이지이전: 이동 x  --%>
-				  <c:if test="${page<=1}">
-				      <a>&laquo;</a>
-				  </c:if>
-				  
-				  <%-- 1페이지보다 크면: 이전버튼 누르면 page값 ,board/getMian으로 보냄 --%>
-				  <c:if test="${page>1}">	
-				    
-				   	<c:url var="back" value="main">
-				        <c:param name="page" value="${page-1}"/>
-				       <c:if test="${search_name != ''}">
-					    <c:param name="search_subject" value="${search_subject}"/>
-					   </c:if>					    
-				    </c:url>				  				    
-				    <a href="${back}">&laquo;</a>
-				  </c:if>
-				  
-				  <%-- 1번부터 끝번호까지 페이지번호 매김--%>
-				  <c:forEach var="i" begin="${startpage}" end="${endpage}" step="1">
-				    <%--현재 페이지는 색깔다르고, 이동없음 --%>
-				    <c:if test="${i == page}">
-				        <a class="active">${i}</a>
-				    </c:if>
-			       
-				    <%--다른 페이지는 누르면 검색필드,검색어,페이지들고 getMian.bo갔다온다 --%>
-				    <c:if test="${i != page}">
-				      <c:url var="move" value="main">
-				        <c:param name="page" value="${i}"/>
-				        <c:if test="${search_name != ''}">
-					      	<c:param name="search_subject" value="${search_subject}"/>
-					    </c:if>					    
-				      </c:url>
-				      <li class="paga-item">
-				        <a href="${move}">${i}</a>
-				      </li> 
-				    </c:if>
-				  </c:forEach>
-				    
-				    <%--현재 페이지가 최대페이지거나 이상 : 작동X, --%>  
-				    <c:if test="${page >= maxpage}">				    
-				      	<a>&raquo;</a>				    
-				    </c:if>
-				    
-					    <c:if test="${page < maxpage}">
-					      
-					      <c:url var="next" value="main">
-					        <c:param name="page" value="${page+1}"/>
-					        <c:if test="${search_name != ''}">
-					      	<c:param name="search_subject" value="${search_subject}"/>
-					      	</c:if>
-					      </c:url>					      
-					        <a href="${next}">&raquo;</a>
-			         </c:if>
-		</div>
+<style>
+.pagination{font-family: 'Lato', sans-serif; margin-top:40px}
+
+.page-link {border:none; color:#777777; margin:0px 12px 0px 12px; padding:0px; 
+height:25px; font-size:16px}
+.page-link:focus{box-shadow: none;}
+.page-link:hover{background-color:white;color:#777777;}
+.page-item.active .page-link {
+    color: #000;
+    background-color: white;
+     border-bottom:2px solid #000;
+}
+.first {margin:0px 12px 0px 0px;}
+.back {margin:0px 22px 0px 0px;}
+.next {margin:0px 0px 0px 22px;}
+.last {margin:0px 0px 0px 12px;}
+</style>
+ 
+ <div>
+	<ul class="pagination justify-content-center">
+	  <%-- 1페이지이전: 작동X, 안보임 --%>
+	  <c:if test="${page<=1}">
+	    <li class="paga-item" style="display:none">
+	      <a class="page-link">&lt;&lt;&nbsp;</a>
+	    </li>
+	    <li class="paga-item" style="display:none">
+	      <a class="page-link">&lt;&nbsp;</a>
+	    </li>
+	  </c:if>
+	  
+	  <%-- 1페이지보다 크면: 이전버튼 누르면 page값 ,board/main으로 보냄 --%>
+	  <c:if test="${page>1}">
+	    <c:url var="first" value="main">
+	    	<c:param name="page" value="${1}"/>
+	    </c:url>
+	    
+	   	<c:url var="back" value="main">
+	        <c:param name="page" value="${page-1}"/>
+	    </c:url>
+	    <li class="paga-item">
+	    	 <a href="${first}" class="page-link first">&lt;&lt;</a>&nbsp;
+	    </li>
+	    
+	    <li class="paga-item">
+	         <a href="${back}" class="page-link back">&lt;</a>&nbsp;
+	    </li>
+	  </c:if>
+	  
+	  <%-- 1번부터 끝번호까지 페이지번호 매김--%>
+	  <c:forEach var="i" begin="${startpage}" end="${endpage}" step="1">
+	    <%--현재 페이지는 색깔다르고, 이동없음 --%>
+	    <c:if test="${i == page}">
+	      <li class="page-item active">
+	        <a class="page-link">${i}</a>
+	      </li>
+	    </c:if>
+	    
+	    <%--다른 페이지는 누르면 검색필드,검색어,페이지들고 Main.bo갔다온다 --%>
+	    <c:if test="${i != page}">
+	      <c:url var="move" value="main">
+	        <c:param name="page" value="${i}"/>
+	      </c:url>
+	      <li class="paga-item">
+	        <a href="${move}" class="page-link">${i}</a>
+	      </li> 
+	    </c:if>
+	  </c:forEach>
+	    
+	    <%--현재 페이지가 최대페이지거나 이상 : 작동X, 안보임 --%>  
+	    <c:if test="${page >= maxpage}">
+	      <li class="page-item" style="display:none">
+	      	<a class="page-link">&nbsp;&gt;</a>
+	      </li>
+	      <li class="page-item" style="display:none">
+	      	<a class="page-link">&nbsp;&gt;</a>
+	      </li>
+	    </c:if>
+	    
+		    <%--최대페이지미만: 다음 버튼누르면 page+1값, 검색필드, 검색어 들고 Main.bo 갔다옴 --%>
+		    <c:if test="${page < maxpage}">
+		      <c:url var="last" value="main">
+		      	<c:param name="page" value="${maxpage}"/>
+		      </c:url>
+		      
+		      <c:url var="next" value="main">
+		        <c:param name="page" value="${page+1}"/>
+		      </c:url>
+		      <li class="page-item">
+		        <a href="${next}" class="page-link next">&nbsp;&gt;</a>
+		      </li>
+		      <li class="page-item">
+		        <a href="${last}" class="page-link last">&nbsp;&gt;&gt;</a>
+		      </li>
+		    </c:if> <%--회원있는경우 끝 --%>
+	   </ul>
+    </div>
 </c:if> <%--  <c:if test="${listcount > 0}"> end --%>
 
 <%-- 게시글이 없는경우 --%>

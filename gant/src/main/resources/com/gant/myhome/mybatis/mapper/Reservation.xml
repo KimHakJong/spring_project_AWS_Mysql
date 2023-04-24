@@ -7,7 +7,7 @@
 	
 	<insert id="insert">
 		<selectKey resultType="int" order="BEFORE" keyProperty="num">
-			select nvl(max(num),0)+1 from Reservation
+			select coalesce(max(num),0)+1 from Reservation
 		</selectKey>
 		insert into Reservation 
 		(num, id, purpose,  names, type, resource_name, day, start_time, end_time) 
@@ -44,7 +44,7 @@
 	
 	<select id="selectById" resultType="reservation">
 		select *
-		from ( select rownum rnum, b.*
+		from ( select (@rownum := @rownum + 1) AS rnum, b.*
 			 from ( select * 
 			        from Reservation 
 			   		where id = #{id} 
@@ -52,11 +52,11 @@
 			   		and day between #{start_day} and #{end_day}
 			   		</if>
 			   		order by day
-			 	  )b 
-			 where rownum &lt;= #{end} 
+			 	  )b, (select @rownum := 0) r
+			 where @rownum &lt;= #{end} 
 			 ) 
 		where rnum between #{start} and #{end}
-	</select>
+	</select>	
 	
 	<select id="selectCountById" resultType="int">
 		select count(*)

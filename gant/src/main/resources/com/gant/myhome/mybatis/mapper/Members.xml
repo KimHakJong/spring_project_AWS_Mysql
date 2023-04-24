@@ -19,8 +19,7 @@
   <select id="findIdCheck" resultType="members">
   	select id, name, email 
   	from members 
-  	where name = #{name} 
-  	and email = #{email}
+  	where name = #{name}
   </select>
   
   <select id="findPassCheck" resultType="members">
@@ -49,7 +48,7 @@
 		   <when test='searchfield=="department"'>department</when> 
 		   <when test='searchfield=="phone_num"'>phone_num</when> 
 		</choose>
-		 like '%' || #{searchword} || '%' 
+		 like CONCAT('%', #{searchword}, '%') 
    </if> 
   </sql>
   
@@ -62,13 +61,13 @@
   
   <select id="getMembersList" resultType="members">
        select * 
-	   from (select a.*, rownum rnum 
+	   from (select a.*, @rownum:=@rownum+1 AS rnum 
 			 from (select *
 			       from members 
 			       where admin != 'true'
 					 	<include refid="search_"/>
-			       order by name) a                                 
-			 where rownum &lt;= #{end} 
+			       order by name) a, (SELECT @rownum:=0) r                                 
+			 where @rownum &lt;= #{end} 
 			) 
 	   where rnum between #{start} and #{end} 
   </select>
@@ -105,7 +104,7 @@
     <select id="getSearchMembersList_ajax" resultType="members">
        select * 
 	   from members 
-	   where name like '%' || #{name} || '%' 
+	   where name like CONCAT('%', #{name}, '%') 
 	   order by name
   </select>
   

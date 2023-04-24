@@ -3,6 +3,7 @@ package com.gant.myhome.controller;
 
 import java.io.PrintWriter;
 import java.security.Principal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,23 +74,24 @@ private static final Logger logger = LoggerFactory.getLogger(MembersController.c
 	
 	@ResponseBody
 	@PostMapping(value="/update_insertmemo")
-	public Map<String,Integer> updateMemo(Memo memo) { //메모 저장을 눌러 넘어옴
+	public Map<String,Integer> updateMemo(Memo memo) {
 		int result = 0;
 		
 		Map<String,Integer> map = new HashMap<String,Integer>();
 		
-		if(memo.getNum()==-1) { //메모 번호가 없음 - 메모 수정이 아닌 추가: insert 후 , insert한 메모번호넘겨줌(추가한 메모 다시 저장할 때 또 insert방지)
-			result = memoservice.add(memo); //메모 추가
-			logger.info("추가된 번호?:"+memo.getNum());
+		if(memo.getNum()==-1) { //새로 메모추가한 경우: 메모컬럼 insert 후 , 메모번호넘겨줌(추가한 메모 다시 저장할 때 또 insert방지)
+			result = memoservice.add(memo);
+			logger.info("추가:"+result);
 			map.put("result", result);
-			map.put("insert_num", memo.getNum());
+			int insert_num = memoservice.getMemoNum(memo.getId());
+			logger.info("추가번호:"+insert_num);
+			map.put("insert_num", insert_num);
 			
-		}else { //메모 번호가 존재 - 메모 수정
+		}else {
 			result = memoservice.update(memo);
 			logger.info("수정:"+result);
 			map.put("result", result);
 		}
-		
 		return map;
 	}
 	

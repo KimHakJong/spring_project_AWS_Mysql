@@ -22,7 +22,8 @@
 		where included_folder_num in (select folder_num 
 									  from f_folder 
 							  		  where p_no = #{p_no}
-								      and folder_path like #{folder_path}||'%')		
+								      and folder_path like CONCAT(#{folder_path}, '%')
+								      )		
 	</select>
 	
 	<update id="updateLocation">
@@ -31,23 +32,24 @@
 								   from f_folder 
 								   where p_no = #{p_no} 
 								   and folder_path = #{folder_path} ), 
-			file_save_path = #{folder_path} || substr(file_save_path, instr(file_save_path, '/', -1)+1) 
+			file_save_path = CONCAT(#{folder_path}, substr(file_save_path, instr(file_save_path, '/', -1)+1)) 
 		where file_num = #{file_num}
 		
 	</update>
 	
 	<update id="updatePathFromEdit">
 		update f_fileinfo 	<!--기존 폴더명:old, 새로운 폴더명:new가정하면  a/b/old/파일명 : a/b/ + new + /파일명 으로 수정하는 작업 -->
-		set file_save_path = substr(file_save_path, 0, instr(#{old_path},'/',-1,2)) || #{name} ||substr(file_save_path, instr(#{old_path},'/',-1,1))
-		where file_save_path like #{old_path} || '%'
+		set file_save_path = CONCAT(substr(file_save_path, 0, instr(#{old_path},'/',-1,2)), #{name}, substr(file_save_path, instr(#{old_path},'/',-1,1)))
+		where file_save_path like CONCAT(#{old_path}, '%')
 	</update>
 	
 	<update id="updateLocationByFolder">
 		update f_fileinfo 	<!--도착할 폴더 경로 + 옮길 폴더의 앞부분 제거한 경로(a/b/c/d/파일명에서 c폴더를 옮기면 그 앞 부분 필요X),겹쳐지는 '/'하나 빼기위해 +1  -->
-		set file_save_path = #{destination_folder_path} || substr(file_save_path, instr(#{folder_to_move},'/',-1,2)+1)
+		set file_save_path = CONCAT(#{destination_folder_path}, substr(file_save_path, instr(#{folder_to_move},'/',-1,2)+1))
 		where included_folder_num in( select folder_num <!-- 옮길 폴더와 그 하위 폴더들의 번호 -->
 								   	  from f_folder
 							 		  where p_no = #{p_no} 
-							 		  and folder_path like #{folder_to_move}||'%' )
+							 		  and folder_path like CONCAT(#{folder_to_move}, '%')
+							 		)
 	</update>	
 </mapper>

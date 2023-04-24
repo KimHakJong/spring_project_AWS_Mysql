@@ -34,7 +34,7 @@ import com.gant.myhome.service.MemberService;
 import com.gant.myhome.task.SendMail;
 
 @Controller
-@RequestMapping(value = "/member")//http://localhost:9696/gant/member/ 로 시작하는 주소 맴핑
+@RequestMapping(value = "/member")//http://localhost:9696/gant/member/ 로 시작
 public class MembersController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MembersController.class);
@@ -73,10 +73,10 @@ public class MembersController {
 			}
 		}
 
-		if(readCookie != null) {
+		if(readCookie != null) { //자동로그인 쿠키가 넘어온 경우
 				logger.info("자동로그인 쿠키 로드 :" + userPrincipal.getName()); //principal.getName() : 로그인한 아이디
 				mv.setViewName("redirect:/pmain/view");
-		}else if (!readCookie2.equals("")){
+		}else if (!readCookie2.equals("")){ // ID저장 쿠키가 넘어온 경우
 			logger.info("ID저장 쿠키 로드 ");
 			mv.setViewName("member/login");
 			mv.addObject("id_store", readCookie2_val);
@@ -92,13 +92,12 @@ public class MembersController {
 	
 	@RequestMapping(value="/join", method=RequestMethod.GET)
 	public String join() {
-		return "member/join"; //WEB-INF/views/member/member_joinForm.jsp
+		return "member/join"; //WEB-INF/views/member/join.jsp
 	}	
 	
 	//회원가입폼에서 아이디 검사
 	@RequestMapping(value = "/idcheck", method=RequestMethod.POST)
-	public void idcheck(@RequestParam("id") String id,
-						HttpServletResponse response) throws Exception {
+	public void idcheck(String id, HttpServletResponse response) throws Exception {
 		
 		int result = memberservice.idCheck(id);
 		response.setContentType("text/html;charset=utf-8");
@@ -157,8 +156,8 @@ public class MembersController {
 	}
 	
 	@PostMapping(value="/findidok")
-	public ModelAndView findIdOk(Members m, RedirectAttributes rattr, ModelAndView mv) {
-		String id = memberservice.findIdCheck(m);
+	public ModelAndView findIdOk(String name, String email, RedirectAttributes rattr, ModelAndView mv) {
+		String id = memberservice.findIdCheck(name,email);
 		
 		if(id.equals("")) {
 			rattr.addFlashAttribute("noname","noname");
@@ -167,7 +166,7 @@ public class MembersController {
 			rattr.addFlashAttribute("noemail","noemail");
 			mv.setViewName("redirect:/member/findid");
 		}else { //정보 잘 찾은 경우
-			mv.addObject("name",m.getName());
+			mv.addObject("name",name);
 			mv.addObject("id", id);
 			mv.setViewName("member/findidok");
 		}
@@ -204,21 +203,18 @@ public class MembersController {
 	public String findPassOkProcess(Members m, RedirectAttributes rattr, Model model,
 									HttpServletRequest request) {
 		
-		String encPassword = passwordEncoder.encode(m.getPassword());
+		String encPassword = passwordEncoder.encode(m.getPassword()); //입력한 비밀번호 암호화
 		m.setPassword(encPassword);
 		
-		int result = memberservice.passUpdate(m);
+		int result = memberservice.passUpdate(m); //비밀번호 변경
 		if(result==1) {
 			rattr.addFlashAttribute("update","success");
 			return "redirect:login";
 		}else {
-			//model.addAttribute("url", request.getRequestURI()); 오류난 url을 보냄
 			model.addAttribute("message","비밀번호 변경 실패");
 			return "error/error";
 		}
 	}
-	
-
 	
 	@RequestMapping(value ="/list")
 	public ModelAndView membersList(Principal principal,

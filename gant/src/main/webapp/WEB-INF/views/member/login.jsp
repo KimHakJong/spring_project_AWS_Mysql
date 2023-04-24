@@ -105,7 +105,6 @@ $(document).ready(function(){
  	})
  	
  	$("form").submit(function(){
- 		
  		$("#store").val($("#id").val());
  	});
 });

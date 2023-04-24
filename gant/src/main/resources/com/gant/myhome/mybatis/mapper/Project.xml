@@ -7,7 +7,7 @@
 	
 	<insert id="create">
 		<selectKey resultType="int" order="BEFORE" keyProperty="p_no">
-			select nvl(max(p_no),0)+1 from project 
+			select COALESCE(max(p_no),0)+1 from project 
 		</selectKey>
 		insert into project 
 			(p_no, p_hostid, p_name, p_sdate, p_edate, p_mids, p_mnames, p_content, p_situation, p_percent) 
@@ -18,14 +18,14 @@
 		select * 
 		from project 
 		<if test="admin == null and position == null">
-			where p_mids like '%' || #{id} || '%'
+			where p_mids like CONCAT('%', #{id}, '%')
 			<if test='p_name != null'>
-				and p_name like '%' || #{p_name} || '%'
+				and p_name like CONCAT('%', #{p_name}, '%')
 			</if>
 		</if>
 		<if test="admin!=null or position!=null">
 			<if test='p_name != null'>
-			where p_name like '%' || #{p_name} || '%'
+			where p_name like CONCAT('%', #{p_name}, '%')
 			</if>
 		</if>
 		order by p_edate asc

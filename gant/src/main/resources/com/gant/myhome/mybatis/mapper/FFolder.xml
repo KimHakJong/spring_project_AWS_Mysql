@@ -21,14 +21,14 @@
 	<!-- 첫폴더생성할 때는 p_no값만 들고와서 name과 path를 지정해서 설정 -->
 	<insert id="insert">
 		<selectKey resultType="int" order="BEFORE" keyProperty="folder_num">
-			select nvl(max(folder_num),0)+1 from f_folder
+			select COALESCE(max(folder_num),0)+1 from f_folder
 		</selectKey>
 		
 		insert into f_folder
 		(p_no, folder_num, folder_name, folder_path) 
 		values (#{p_no}, #{folder_num},
 		<if test='folder_name==null and folder_path==null'>
-			'HOME', #{p_no}||'/' 
+			'HOME', CONCAT(#{p_no}, '/') 
 		</if>
 		<if test='folder_name!=null and folder_path!=null'>
 			#{folder_name}, #{folder_path} 
@@ -41,8 +41,8 @@
 		select * 
 		from f_folder 
 		where p_no = #{p_no} 
-		and folder_path like #{folder_path}||'%/' 
-		and folder_path not like #{folder_path}||'%/_%'
+		and folder_path like CONCAT(#{folder_path}, '%/') 
+		and folder_path not like CONCAT(#{folder_path}, '%/_%')
 	</select>
 	
 	<update id="update">
@@ -53,24 +53,25 @@
 	
 	<update id="updatePathFromEdit">
 		update f_folder		<!--기존 폴더명:old, 새로운 폴더명:new가정하면  a/b/old/d/e/ : a/b/ + new + /d/e/ 로 수정하는 작업 -->
-		set folder_path =  substr(folder_path, 0, instr(#{old_path},'/',-1,2)) || #{name} ||substr(folder_path, instr(#{old_path},'/',-1,1))
-		where folder_path like #{old_path} || '%'
+		set folder_path =  CONCAT(substr(folder_path, 0, instr(#{old_path},'/',-1,2)), #{name}, substr(folder_path, instr(#{old_path},'/',-1,1)))
+		where folder_path like CONCAT(#{old_path}, '%')
 	</update>	
 	
 	<delete id="delete">
 		delete 
 		from f_folder 
 		where p_no = #{p_no} 
-		and folder_path like #{folder_path}||'%'
+		and folder_path like CONCAT(#{folder_path}, '%')
 	</delete>
 	
 	<update id="updateLocation">
 		update f_folder 	<!--도착할 폴더 경로 + 옮길 폴더의 앞부분 제거한 경로(a/b/c/d/에서 c폴더를 옮기면 그 앞 부분 필요X),겹쳐지는 '/'하나 빼기위해 +1  -->
-		set folder_path = #{destination_folder_path} || substr(folder_path, instr(#{folder_to_move},'/',-1,2)+1)
+		set folder_path = CONCAT(#{destination_folder_path}, substr(folder_path, instr(#{folder_to_move},'/',-1,2)+1))
 		where folder_num in( select folder_num <!-- 옮길 폴더와 그 하위 폴더들의 번호 -->
 							 from f_folder
 							 where p_no = #{p_no} 
-							 and folder_path like #{folder_to_move}||'%' )
+							 and folder_path like CONCAT(#{folder_to_move}, '%')
+							)
 	</update>
 	
 </mapper>

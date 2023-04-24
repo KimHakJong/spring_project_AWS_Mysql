@@ -110,7 +110,8 @@ public class TodolistController {
 			    	r_list.add(numlist);
 		    	}
 	    	}
-
+	   
+	    	
 		}
 		
 		
@@ -120,12 +121,9 @@ public class TodolistController {
 		
 		
 		for (HashMap<String, Object> map : r_list) {
-			
 			int value = 0;
-			
-		    for (Map.Entry<String, Object> data : map.entrySet()) {
-		    	
-		    	value = (Integer)data.getValue();
+		    for (Map.Entry<String, Object> entry : map.entrySet()) {
+		    	value = (Integer)entry.getValue();
 		    	
 		    	if(value != 0) {
 		    		check++;
@@ -154,9 +152,9 @@ public class TodolistController {
 		String status = "r";
 		
 	   
-	    mv.addObject("p_no", p_no);
-	    mv.addObject("p_id", p_ids);
-	    mv.addObject("p_name", p_names);
+	   mv.addObject("p_no", p_no);
+	   mv.addObject("p_id", p_ids);
+	   mv.addObject("p_name", p_names);
 		mv.addObject("page",page);
 		mv.addObject("maxpage",maxpage);
 		mv.addObject("startpage",startpage);

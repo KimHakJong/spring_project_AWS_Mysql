@@ -14,12 +14,19 @@
 	
 	<insert id="add">
 		<selectKey resultType="int" order="BEFORE" keyProperty="num">
-			select nvl(max(num),0)+1 from memo 
+			select COALESCE(max(num),0)+1 from memo
 		</selectKey>
 		insert into memo 
 		(num, id, subject, content, background, color) 
 		values (#{num}, #{id} , #{subject}, #{content}, #{background}, #{color})
 	</insert>
+	
+	<select id="getMemoNum" resultType="int">
+		select num 
+		from memo 
+		where id = #{id}
+		and num = (select max(num) from memo where id = #{id})
+	</select>
 	
 	<select id="getMemoOne" resultType="memo">
 		select * 

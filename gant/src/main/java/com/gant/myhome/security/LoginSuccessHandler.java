@@ -13,13 +13,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 
-//AuthenticationSuccessHandler : 사용자 인증이 성공 후 처리할 작업을 직접 작성할 때 사용하는 인터페이스 입니다.
-//@Service
+//AuthenticationSuccessHandler : 사용자 인증이 성공 후 처리할 작업을 직접 작성할 때 사용하는 인터페이스
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-	
 	private static final Logger logger = LoggerFactory.getLogger(LoginSuccessHandler.class);
-	
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -37,7 +34,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 			response.addCookie(cookie);//클라이언트로 쿠키값 전송
 			logger.info("ID저장 쿠키생성");
 		}else if(IDStore == null || IDStore.equals("")){
-			cookie.setMaxAge(0); //쿠키 유효시간 0
+			cookie.setMaxAge(0); //쿠키 유효시간 24시간
 			response.addCookie(cookie);//클라이언트로 쿠키값 전송
 		}
 		
@@ -45,5 +42,4 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		response.sendRedirect(url);
 		
 	}
-
 }

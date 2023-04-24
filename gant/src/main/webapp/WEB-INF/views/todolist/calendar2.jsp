@@ -582,7 +582,7 @@ border-color: #009CFF !important;
 
 		
 				
-		if(!(name.equals(hostid) || name.equals(loginid) ||  admin.equals("true")))
+		if(!(name == hostid || name == loginid ||  admin == true))
 		{
             jq1('#calendarModal #modifyCalendar').css('display', 'none');
 			jq1('#calendarModal #deleteCalendar').css('display', 'none');
@@ -617,7 +617,6 @@ border-color: #009CFF !important;
 		console.log(m_end_dt);
 		
 		//console.log(g_arg.event.start.getHours()+':'+g_arg.event.start.getMinutes());
-		
 		//값이 있는경우 세팅
 		if (g_arg.event != undefined) {
 

@@ -187,7 +187,7 @@ $(document).ready(function(){
 		   </div>
 		   
 		   <c:if test="${admin == 'true'}">
-		   <div class="form-group last">
+		   <div class="form-group">
 		   <label for="noticebox" style="color:orange;">공지글 설정&nbsp;&nbsp;
 		   <input type="checkbox" id="noticebox" name="noticebox" value="false"></label>   
 		   </div>
