@@ -1,8 +1,7 @@
-drop table overtime_condition cascade constraints purge;
+DROP TABLE IF EXISTS overtime_condition;
 
 CREATE TABLE overtime_condition(
-	paper_num             number references overtime(paper_num) on delete cascade,
-	reference_person 	 varchar2(15) references members(id), --참조자 아이디
-	condition	          varchar2(8) check (condition in ('승인','거절','대기')) -- 결재상태	
+paper_num INT REFERENCES overtime(paper_num) ON DELETE CASCADE,
+reference_person VARCHAR(15) REFERENCES members(id),
+condition ENUM('승인', '거절', '대기') -- 결재상태
 );
-

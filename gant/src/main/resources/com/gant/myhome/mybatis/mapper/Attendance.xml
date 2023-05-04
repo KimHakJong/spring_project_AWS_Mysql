@@ -11,134 +11,108 @@
 		-->
     
    
-    <select id="Vacationselect" resultType="int">
+<select id="Vacationselect" resultType="int">
     select count(*)
     from vacation_num
     where id = #{id}
-    </select> 
-    
-    
-    <select id="gethiredate" resultType="String">
-    select HIREDATE 
-    from members 
+</select>
+
+<select id="gethiredate" resultType="String">
+    select HIREDATE
+    from members
     where id = #{id}
-    </select> 
-    
-    <insert id="Vacation_num_insert"> 
-    INSERT INTO vacation_num (id , vacation_num)
-    VALUES (#{id},#{vacation_num})
-    </insert>
-    
-    <update id="Update_vacation_num">
-     update vacation_num
-     set vacation_num= vacation_num + 15
-    </update>  
-    
-    <select id="SelectVacation_num" resultType="int">
+</select>
+
+<insert id="Vacation_num_insert">
+    INSERT INTO vacation_num (id, vacation_num)
+    VALUES (#{id}, #{vacation_num})
+</insert>
+
+<update id="Update_vacation_num">
+    update vacation_num
+    set vacation_num = vacation_num + 15
+</update>
+
+<select id="SelectVacation_num" resultType="int">
     select vacation_num
     from vacation_num
     where id = #{id}
-    </select>
-    
-    <select id="AttendanceSelect" resultType="int">
+</select>
+
+<select id="AttendanceSelect" resultType="int">
     select count(*)
     from attendance
     where id = #{id}
-    </select> 
-    
-    <insert id="attendance_insert">
-     INSERT INTO attendance (id,work_week,checkbutton)
-     VALUES (#{id},'00:00:00','false')
-    </insert>
-    
-    <select id="selectCommuteRecord" resultType="attendance">
-    select * 
-    from commute_record 
-    where id = #{id} and work_date = #{now_Day} and endTime = '0'
-    </select>
-    
-    <select id="selectAttendance" resultType="attendance">
-    select * 
-    from attendance 
-    where id = #{id}
-    </select>
-    
-    <update id="Resetwork_week">
-     update attendance
-     set work_week = '00:00:00'
-    </update>
-    
-    <update id="startTimeUpdate">
-     update attendance
-     set checkbutton='true'
-     where id= #{id}
-    </update>
-    
-    <insert id="insert_commute_record">
-     insert into commute_record (id,startTime,work_date,endTime,work_today)
-     VALUES (#{id},#{startTime},to_char(SYSDATE, 'YYYYMMDD'),'0','0')
-    </insert>
-    
-    <update id="endTimeUpdate">
-    update attendance
-    set work_today=#{work_today}, work_week=#{work_week} , overTime=#{overTime} , checkbutton='false'
-    where id=#{id}
-    </update>
+</select>
 
-    <update id="Update_commute_record">
+<insert id="attendance_insert">
+    INSERT INTO attendance (id, work_week, checkbutton)
+    VALUES (#{id}, '00:00:00', 'false')
+</insert>
+
+<select id="selectCommuteRecord" resultType="attendance">
+    select *
+    from commute_record
+    where id = #{id} and work_date = #{now_Day} and endTime = '0'
+</select>
+
+<select id="selectAttendance" resultType="attendance">
+    select *
+    from attendance
+    where id = #{id}
+</select>
+
+<update id="Resetwork_week">
+    update attendance
+    set work_week = '00:00:00'
+</update>
+
+<update id="startTimeUpdate">
+    update attendance
+    set checkbutton = 'true'
+    where id = #{id}
+</update>
+
+<insert id="insert_commute_record">
+    insert into commute_record (id, startTime, work_date, endTime, work_today)
+    VALUES (#{id}, #{startTime}, DATE_FORMAT(NOW(), '%Y%m%d'), '0', '0')
+</insert>
+
+<update id="endTimeUpdate">
+    update attendance
+    set work_today = #{work_today}, work_week = #{work_week}, overTime = #{overTime}, checkbutton = 'false'
+    where id = #{id}
+</update>
+
+<update id="Update_commute_record">
     update commute_record
-    set endTime = #{endTime} , work_today = #{work_today}
-    where id=#{id} and work_date = #{now_Day} and startTime = #{startTime} 
-    </update>
-    
-    <select id="getrecordCount" resultType="int">
-      select count(*)
-      from commute_record
-      where id = #{id}
-    </select>
-    
-    
-     <select id="getrecordList" resultType="attendance">
-       <![CDATA[
-   SELECT *
-     FROM (
-	      SELECT ROWNUM rnum, j.*
-	      FROM (
-	            SELECT *
-	            FROM commute_record
-                where id = #{id}
-	            order by work_date DESC ,  startTime DESC
-		         ) j
-	      WHERE ROWNUM <= #{end} 
-	       )
-    WHERE rnum >= #{start} AND rnum <= #{end}            
-		]]>		
-    </select>
-    
-    <select id="getSearchCount" resultType="int">
-      select count(*)
-      from commute_record
-      where id = #{id} and work_date = #{date_Search}
-    </select>
-    
-     <select id="getSearchList" resultType="attendance">
-       <![CDATA[
-	   SELECT *
-	     FROM (
-		      SELECT ROWNUM rnum, j.*
-		      FROM (
-		            SELECT *
-		            FROM commute_record
-	                where id = #{id} and work_date = #{date_Search}
-		            order by work_date DESC ,  startTime DESC
-			         ) j
-		      WHERE ROWNUM <= #{end} 
-		       )
-	    WHERE rnum >= #{start} AND rnum <= #{end}            
-		]]>		
-    </select>
+    set endTime = #{endTime}, work_today = #{work_today}
+    where id = #{id} and work_date = #{now_Day} and startTime = #{startTime}
+</update>
+
+<select id="getrecordCount" resultType="int">
+    select count(*)
+    from commute_record
+    where id = #{id}
+</select>
+
+<select id="getSearchList" resultType="attendance">
+    <![CDATA[
+        SELECT *
+        FROM (
+            SELECT @rownum:=@rownum+1 AS rnum, j.*
+            FROM (
+                SELECT *
+                FROM commute_record, (SELECT @rownum:=0) rnum
+                WHERE id = #{id} AND work_date = #{date_Search}
+                ORDER BY work_date DESC, startTime DESC
+            ) j
+            WHERE @rownum <= #{end}
+        ) AS search_list
+        WHERE rnum >= #{start} AND rnum <= #{end}  
+    ]]>
+</select>
     
     
-    
-       
+ 
 </mapper>

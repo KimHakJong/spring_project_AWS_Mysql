@@ -10,198 +10,184 @@
 		2. resultType속성은 연동시킬 메서드에 명시된 반환 타입을 작성해 줍니다.
 		-->
      
-     <select id="getListCount" resultType="int">
-        select count(*) from boards
-     </select>
-     
-            
-      <select id="getBoardList"  resultType="board">
-	      SELECT *
-			FROM (
-			  SELECT ROWNUM rnum, j.*
-			  FROM (
-			    SELECT boards.*, NVL(cnt, 0) AS cnt
-			    FROM boards
-			    LEFT OUTER JOIN (
-			      SELECT comment_board_num, COUNT(*) AS cnt
-			      FROM com
-			      GROUP BY comment_board_num
-			    ) ON BOARD_NUM = comment_board_num
-			    ORDER BY BOARD_NOTICE DESC, BOARD_RE_REF DESC, BOARD_RE_SEQ ASC
-			  ) j
-			  WHERE ROWNUM &lt;= #{end} 
-			)
-       WHERE rnum &gt;= #{start} AND rnum &lt;= #{end}         
-      </select>
-      
-
-      
-      <select id="getSearchListCount" resultType="int">
-        select count(*) from boards
-        where BOARD_SUBJECT like '%'||#{search_name}||'%'  
-     </select>
-     
-     
-      <select id="getBoardSearchList"  resultType="board">
-       select * 
-	   from  (select rownum rnum, j.* 
-	          from (select boards.* , nvl(cnt,0) as cnt 
-			        from boards left outer join (select comment_board_num ,count(*) as CNT
-							                     from com
-							                     group by comment_board_num)
-				    on BOARD_NUM = comment_board_num
-				    where BOARD_SUBJECT like '%'||#{search_name}||'%'   
-				    order by BOARD_RE_REF desc,
-				    BOARD_RE_SEQ asc) j                                      
-		      where rownum &lt;= #{end} 
-		      ) 
-		where rnum  &gt;= #{start} and rnum &lt;= #{end}        
-      </select>
-      
-
-     
-      <!-- admin 계정 확인  -->
-     <select id="getadmindate" resultType="String">
-        select admin from members where id = #{id} 
-     </select>
-     
-     
-      <insert id="insertBoard">
-        <selectKey resultType="int" order="BEFORE" keyProperty="board_num">
-            select nvl(max(BOARD_NUM),0)+1 from boards            
-        </selectKey>
-           insert into boards 
-          (BOARD_NUM,     BOARD_NAME,   BOARD_PASS,  BOARD_SUBJECT,
-		   BOARD_CONTENT, BOARD_FILE, BOARD_ORIGINAL, BOARD_RE_REF,   
-		   BOARD_RE_LEV,  BOARD_RE_SEQ, BOARD_READCOUNT,
-		   BOARD_LIKE , BOARD_NOTICE ,fontColor ,fontSize, fontWeight ) 
-		   values
-		   (#{board_num} ,#{board_name}, #{board_pass}, #{board_subject},
-		   #{board_content}, #{board_file , jdbcType=VARCHAR}, #{board_original , jdbcType=VARCHAR}, #{board_num},
-		   #{board_re_lev}, #{board_re_seq}, #{board_readcount},
-		   #{board_like}, #{board_notice}, #{fontColor},#{fontSize},#{fontWeight}
-		   ) 
-      </insert>
-      
-      <!-- 글 조회수 증가 -->
-      <update id="setReadCountUpdate">
-	       update boards
-	       set BOARD_READCOUNT = BOARD_READCOUNT+1
-	       where BOARD_NUM = #{number}
-      </update>
-      
-         
-      <select id="getDetail" resultType="board">
-	      select *
-	      from boards
-	      where BOARD_NUM = #{number}
-      </select>
-      
-      <select id="selectLike" resultType="String">
-	      select id
-	      from boardLike
-	      where id = #{id} and board_num = #{board_num}
-      </select>
+  
       
     
-      <insert id="insertLike">
-      INSERT INTO boardLike
-      (id,board_num,like_check)
-	  VALUES
-	  (#{id},#{board_num},'false')
-      </insert>
-      
-      
-      <select id="selectLikeCheck" resultType="String">
-        select like_check
-        from boardLike
-        where id = #{id} and board_num = #{board_num}
-      </select>
-      
-       <select id="getprofileimg" resultType="String">
-        select profileimg
-        from members
-        where id = #{BOARD_NAME}
-       </select>
+<!-- Get the count of total boards -->
+<select id="getListCount" resultType="int">
+    SELECT COUNT(*) FROM boards
+</select>
 
-       
-        <delete id="boardDelete">
-       <![CDATA[
-                     delete from boards 
-				     where board_re_ref = #{board_re_ref}  
-				     and board_re_lev >= #{board_re_lev} 
-				     and board_re_seq >= #{board_re_seq} 
-				     and board_re_seq <=( nvl((select min(board_re_seq)-1 
-				                         from boards 
-				                         where board_re_ref = #{board_re_ref}
-				                         and board_re_lev = #{board_re_lev} 
-				                         and board_re_seq > #{board_re_seq}), 
-				                         (select max(board_re_seq) 
-				                          from boards 
-				                          where board_re_ref = #{board_re_ref})) 
-				                        )
-		]]>		                              
-      </delete>
+<!-- Get the board list with comments count -->
+<select id="getBoardList" resultType="board">
+    SELECT *
+    FROM (
+        SELECT ROW_NUMBER() OVER(ORDER BY BOARD_NOTICE DESC, BOARD_RE_REF DESC, BOARD_RE_SEQ ASC) AS rnum,
+        boards.*, COALESCE(cnt, 0) AS cnt
+        FROM boards
+        LEFT OUTER JOIN (
+            SELECT comment_board_num, COUNT(*) AS cnt
+            FROM com
+            GROUP BY comment_board_num
+        ) com ON boards.BOARD_NUM = com.comment_board_num
+    ) j
+    WHERE j.rnum BETWEEN #{start} AND #{end}
+</select>
 
-      <update id="BoardupdateLike">
-      update boards
-      set  BOARD_LIKE = BOARD_LIKE + #{update} 
-      where board_num = #{board_num} 
-      </update> 
-      
-         
-      <update id="boardReplyUpdate">
-        update boards
-        set    BOARD_RE_SEQ = BOARD_RE_SEQ+1
-        where  BOARD_RE_REF = #{board_re_ref}             
-        and    BOARD_RE_SEQ <![CDATA[ > ]]> #{board_re_seq}     
-      </update>   
-      
-      <insert id="boardReply">
-         <selectKey resultType="int" order="BEFORE" keyProperty="board_num">
-            select nvl(max(board_num),0)+1 from boards           
-        </selectKey>
-          insert into boards  
-          (BOARD_NUM,     BOARD_NAME,   BOARD_PASS,  BOARD_SUBJECT,
-		   BOARD_CONTENT, BOARD_RE_REF,    
-		   BOARD_RE_LEV,  BOARD_RE_SEQ, BOARD_READCOUNT,
-		   BOARD_LIKE , BOARD_NOTICE ,fontColor ,fontSize, fontWeight ) 
-		   values
-		   (#{board_num} ,#{board_name}, #{board_pass}, #{board_subject},
-		   #{board_content},#{board_re_ref},
-		   #{board_re_lev}, #{board_re_seq}, #{board_readcount},
-		   #{board_like}, #{board_notice}, #{fontColor},#{fontSize},#{fontWeight}
-		   )
-      </insert>
+<!-- Get the count of boards based on a search query -->
+<select id="getSearchListCount" resultType="int">
+    SELECT COUNT(*) FROM boards
+    WHERE BOARD_SUBJECT LIKE CONCAT('%', #{search_name}, '%')
+</select>
 
+<!-- Get the list of boards based on a search query with comments count -->
+<select id="getBoardSearchList" resultType="board">
+    SELECT *
+    FROM (
+        SELECT ROW_NUMBER() OVER(ORDER BY BOARD_RE_REF DESC, BOARD_RE_SEQ ASC) AS rnum,
+        boards.*, COALESCE(cnt, 0) AS cnt
+        FROM boards
+        LEFT OUTER JOIN (
+            SELECT comment_board_num, COUNT(*) AS cnt
+            FROM com
+            GROUP BY comment_board_num
+        ) com ON boards.BOARD_NUM = com.comment_board_num
+        WHERE BOARD_SUBJECT LIKE CONCAT('%', #{search_name}, '%')
+    ) j
+    WHERE j.rnum BETWEEN #{start} AND #{end}
+</select>
 
-            
-      <update id="boardModify">
-        update boards
-        set
-               BOARD_SUBJECT = #{board_subject},
-               BOARD_PASS = #{board_pass},
-               BOARD_CONTENT = #{board_content},
-               BOARD_FILE = #{board_file , jdbcType=VARCHAR},
-               BOARD_ORIGINAL = #{board_original , jdbcType=VARCHAR},
-               BOARD_NOTICE = #{board_notice} ,
-               fontColor = #{fontColor} ,
-               fontSize = #{fontSize} ,
-               fontWeight = #{fontWeight}
-        where  BOARD_NUM = #{board_num}            
-      </update>
-      
-      
-      
-       <select id="getDeleteFileList" resultType="String">
-       select board_file
-       from board_deletefile
-       </select>
-      
-      <delete id="deleteFileList" parameterType="String">
-        delete from board_deletefile
-        where board_file = #{filename}
-      </delete>
+<!-- Check if a member is an admin -->
+<select id="getadmindate" resultType="String">
+    SELECT admin FROM members WHERE id = #{id}
+</select>
+
+<!-- Insert a new board -->
+<insert id="insertBoard" useGeneratedKeys="true" keyProperty="board_num">
+    INSERT INTO boards (
+        BOARD_NUM, BOARD_NAME, BOARD_PASS, BOARD_SUBJECT, BOARD_CONTENT,
+        BOARD_FILE, BOARD_ORIGINAL, BOARD_RE_REF, BOARD_RE_LEV, BOARD_RE_SEQ,
+        BOARD_READCOUNT, BOARD_LIKE, BOARD_NOTICE, fontColor, fontSize, fontWeight
+    )
+    VALUES (
+        (SELECT COALESCE(MAX(BOARD_NUM), 0) + 1 FROM boards),
+        #{board_name}, #{board_pass}, #{board_subject}, #{board_content},
+        #{board_file}, #{board_original}, (SELECT COALESCE(MAX(BOARD_NUM), 0) + 1 FROM boards),
+        #{board_re_lev}, #{board_re_seq}, #{board_readcount}, #{board_like},
+        #{board_notice}, #{fontColor}, #{fontSize}, #{fontWeight}
+    )
+</insert>
+
+<!-- Update the board read count -->
+<update id="setReadCountUpdate">
+    UPDATE boards SET BOARD_READCOUNT = BOARD_READCOUNT + 1 WHERE BOARD_NUM = #{number}
+</update>
+
+<!-- Get the details of a board -->
+<select id="getDetail" resultType="board">
+    SELECT * FROM boards WHERE BOARD_NUM = #{number}
+</select>
+
+<!-- Check if a member has already liked a board -->
+<select id="selectLike" resultType="String">
+    SELECT id FROM boardLike WHERE id = #{id} AND board_num = #{board_num}
+</select>
+
+<insert id="insertLike">
+    INSERT INTO boardLike
+    (id,board_num,like_check)
+    VALUES
+    (#{id},#{board_num},'false')
+</insert>
+
+<select id="selectLikeCheck" resultType="String">
+    SELECT like_check
+    FROM boardLike
+    WHERE id = #{id} AND board_num = #{board_num}
+</select>
+
+<select id="getprofileimg" resultType="String">
+    SELECT profileimg
+    FROM members
+    WHERE id = #{BOARD_NAME}
+</select>
+
+<delete id="boardDelete">
+    <![CDATA[
+    DELETE FROM boards
+    WHERE board_re_ref = #{board_re_ref}
+    AND board_re_lev >= #{board_re_lev}
+    AND board_re_seq >= #{board_re_seq}
+    AND board_re_seq <= (
+        COALESCE((
+            SELECT MIN(board_re_seq)-1
+            FROM boards
+            WHERE board_re_ref = #{board_re_ref}
+            AND board_re_lev = #{board_re_lev}
+            AND board_re_seq > #{board_re_seq}
+        ), (
+            SELECT MAX(board_re_seq)
+            FROM boards
+            WHERE board_re_ref = #{board_re_ref}
+        ))
+    )
+    ]]>
+</delete>
+
+<update id="BoardupdateLike">
+    UPDATE boards
+    SET BOARD_LIKE = BOARD_LIKE + #{update}
+    WHERE board_num = #{board_num}
+</update>
+
+<update id="boardReplyUpdate">
+    UPDATE boards
+    SET BOARD_RE_SEQ = BOARD_RE_SEQ+1
+    WHERE BOARD_RE_REF = #{board_re_ref}
+    AND BOARD_RE_SEQ > #{board_re_seq}
+</update>
+
+<insert id="boardReply">
+    <selectKey resultType="int" order="BEFORE" keyProperty="board_num">
+        SELECT COALESCE(MAX(board_num),0)+1 FROM boards
+    </selectKey>
+    INSERT INTO boards
+    (BOARD_NUM,     BOARD_NAME,   BOARD_PASS,  BOARD_SUBJECT,
+    BOARD_CONTENT, BOARD_RE_REF,
+    BOARD_RE_LEV,  BOARD_RE_SEQ, BOARD_READCOUNT,
+    BOARD_LIKE , BOARD_NOTICE ,fontColor ,fontSize, fontWeight )
+    VALUES
+    (#{board_num} ,#{board_name}, #{board_pass}, #{board_subject},
+    #{board_content},#{board_re_ref},
+    #{board_re_lev}, #{board_re_seq}, #{board_readcount},
+    #{board_like}, #{board_notice}, #{fontColor},#{fontSize},#{fontWeight}
+    )
+</insert>
+
+<update id="boardModify">
+    UPDATE boards
+    SET
+    BOARD_SUBJECT = #{board_subject},
+    BOARD_PASS = #{board_pass},
+    BOARD_CONTENT = #{board_content},
+    BOARD_FILE = #{board_file},
+    BOARD_ORIGINAL = #{board_original},
+    BOARD_NOTICE = #{board_notice},
+    fontColor = #{fontColor},
+    fontSize = #{fontSize},
+    fontWeight = #{fontWeight}
+    WHERE BOARD_NUM = #{board_num}
+</update>
+
+<select id="getDeleteFileList" resultType="String">
+    SELECT board_file
+    FROM board_deletefile
+</select>
+
+<delete id="deleteFileList" parameterType="String">
+    DELETE FROM board_deletefile
+    WHERE board_file = #{filename}
+</delete>
       
        
 </mapper>
