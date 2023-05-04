@@ -1,17 +1,16 @@
-drop sequence note_seq; --쪽지 시퀀스삭제
-create sequence note_seq; --쪽지 시퀀스생성	
-	
+DROP TABLE IF EXISTS note CASCADE;
 
-DROP TABLE note CASCADE CONSTRAINTS;
+DROP SEQUENCE IF EXISTS note_seq;
 
+CREATE SEQUENCE note_seq;
 
 CREATE TABLE note(
-    id	            varchar2(15) references members(id) on delete cascade, -- id (작성자)
-	to_id	        varchar2(300), --id을 "," 을 기준으로 나눈다.
-    note_num	    number PRIMARY KEY,
-	subject	     	varchar2(300),
-	content	     	varchar2(4000),
-	write_date	  	varchar2(10)  default to_char(SYSDATE, 'YYYY/MM/DD'), --작성일
-	delete_num      number references note_delete(delete_num) on delete cascade,
-	file_num         number 
+    note_num INT AUTO_INCREMENT PRIMARY KEY,
+    id VARCHAR(15) REFERENCES members(id) ON DELETE CASCADE,
+    to_id VARCHAR(300),
+    subject VARCHAR(300),
+    content VARCHAR(4000),
+    write_date VARCHAR(10) DEFAULT DATE_FORMAT(NOW(), '%Y/%m/%d'),
+    delete_num INT REFERENCES note_delete(delete_num) ON DELETE CASCADE,
+    file_num INT
 );

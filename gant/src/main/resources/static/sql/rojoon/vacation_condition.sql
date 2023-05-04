@@ -1,9 +1,10 @@
-drop table vacation_condition cascade constraints purge;
+DROP TABLE IF EXISTS vacation_condition;
 
-CREATE TABLE vacation_condition(
-	paper_num           number references vacation(paper_num) on delete cascade,
-	reference_person	varchar2(15) references members(id) on delete cascade, --참조자 아이디
-	condition	        varchar2(8) check (condition in ('승인','거절','대기')) -- 결재상태	
+CREATE TABLE vacation_condition (
+    paper_num INT,
+    reference_person VARCHAR(15),
+    `condition` ENUM('승인','거절','대기'),
+    FOREIGN KEY (paper_num) REFERENCES vacation(paper_num) ON DELETE CASCADE,
+    FOREIGN KEY (reference_person) REFERENCES members(id) ON DELETE CASCADE
 );
-
 

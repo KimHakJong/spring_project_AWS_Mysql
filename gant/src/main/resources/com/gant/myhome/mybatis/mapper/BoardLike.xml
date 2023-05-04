@@ -5,32 +5,30 @@
 <!--  Mapper 인터페이스의 패키지 명과 이름을 namespace로 설정합니다. -->
 <mapper namespace="com.gant.myhome.mybatis.mapper.BoardLikeMapper">
         
-      <select id="selectLike" resultType="String">
-	      select id
-	      from boardLike
-	      where id = #{id} and board_num = #{board_num}
-      </select>
-      
-   
-      <insert id="insertLike">
-      INSERT INTO boardLike
-      (id,board_num,like_check)
-	  VALUES
-	  (#{id},#{board_num},'false')
-      </insert>
-      
-      
-      <select id="selectLikeCheck" resultType="String">
-        select like_check
-        from boardLike
-        where id = #{id} and board_num = #{board_num}
-      </select>
-      
-      <update id="updateLike">
-      update boardLike
-      set  like_check = #{like_check}
-      where id = #{id} and board_num = #{board_num}
-      </update>
+<select id="selectLike" resultType="String">
+    SELECT id
+    FROM boardLike
+    WHERE id = #{id} AND board_num = #{board_num}
+</select>
+
+<insert id="insertLike">
+    INSERT INTO boardLike
+    (id, board_num, like_check)
+    VALUES
+    (#{id}, #{board_num}, 'false')
+</insert>
+
+<select id="selectLikeCheck" resultType="String">
+    SELECT like_check
+    FROM boardLike
+    WHERE id = #{id} AND board_num = #{board_num}
+</select>
+
+<update id="updateLike">
+    UPDATE boardLike
+    SET like_check = #{like_check}
+    WHERE id = #{id} AND board_num = #{board_num}
+</update>
       
       
 </mapper>

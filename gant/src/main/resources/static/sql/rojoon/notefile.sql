@@ -1,12 +1,11 @@
-drop sequence notefile_seq; --쪽지파일 시퀀스삭제
-create sequence notefile_seq; --쪽지파일 시퀀스생성
+DROP SEQUENCE IF EXISTS notefile_seq;
+CREATE SEQUENCE notefile_seq;
 
-drop table notefile CASCADE CONSTRAINTS;
+DROP TABLE IF EXISTS notefile;
 
 CREATE TABLE notefile(
-	file_num       number PRIMARY KEY,
-	original_filename 	varchar2(50), -- 오리지널 파일이름
-	extension		 varchar2(50), -- 확장자
-	save_folder		 varchar2(1000) -- 저장경로 (파일경로 + 중복방지파일명)
+    file_num INT AUTO_INCREMENT PRIMARY KEY,
+    original_filename VARCHAR(50), -- original filename
+    extension VARCHAR(50), -- extension
+    save_folder VARCHAR(1000) -- Save path (file path + duplicate prevention file name)
 );
-
